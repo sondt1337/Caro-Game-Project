@@ -1,16 +1,8 @@
-# pip install flask
-# pip install flask-socketio
-# pip install jinja2
-# pip uninstall eventlet
-# pip install eventlet==0.30.0
-# pip install gevent
-# pip install gevent-websocket
-
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
-socketio = SocketIO(app, async_mode='gevent')
+socketio = SocketIO(app)
 
 @app.route('/')
 def index():
