@@ -1,10 +1,51 @@
+// Kết nối socket thông qua LAN 
 let socket = io.connect('http://' + document.domain + ':' + location.port);
 
+// Kết nối socket qua server
 // let socket = io.connect('https://botcobac.redipsspider.repl.co');
-let boardElement = document.getElementById('board');
-let board = [];
-let currentPlayer = 'X';
 
+// Tạo mã phòng để bắt đầu chơi
+document.getElementById('create-room-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    let roomCode = document.getElementById('create-room-code').value;
+    fetch('/create', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'room_code': roomCode,
+        })
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to create room');
+        }
+        alert('Room created successfully');
+    });
+});
+
+
+// Lấy room-form từ Frontend để kiểm tra mã phòng 
+document.getElementById('join-room-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    let roomCode = document.getElementById('join-room-code').value;
+    socket.emit('join', { room_code: roomCode }, function(error) {
+        if (error) {
+            alert(error);
+        } else {
+            alert('Joined room successfully');
+        }
+    });
+});
+
+
+
+// Khai báo bảng và người chơi đầu được sử dụng "X"
+let boardElement = document.getElementById('board');
+let statusElement = document.getElementById('status');
+let board = [];
+let currentPlayer;
+
+
+
+// Tạo bảng 20x20 
 for (let i = 0; i < 20; i++) {
     for (let j = 0; j < 20; j++) {
         let cell = document.createElement('div');
@@ -15,19 +56,30 @@ for (let i = 0; i < 20; i++) {
     }
 }
 
+// Handle mỗi Click và xử lý logic sau mỗi lần chọn vị trí
 function handleClick(e) {
+    if (!currentPlayer) {
+        return;
+    }
     e.target.textContent = currentPlayer;
-    socket.emit('move', { index: board.indexOf(e.target), player: e.target.textContent });
+    socket.emit('move', { room_code: roomCode, index: board.indexOf(e.target), player: e.target.textContent });
 }
+
+socket.on('join', function(data) {
+    roomCode = data.room_code;
+    currentPlayer = data.player;
+});
 
 socket.on('move', function(data) {
     board[data.index].textContent = data.player;
     currentPlayer = data.player === 'X' ? 'O' : 'X';
     if (checkWin(data.index, data.player)) {
-        alert(data.player + ' wins!');
+        statusElement.textContent = data.player + ' wins!';
     }
 });
 
+
+// Hàm kiểm tra trả về kết quả (Thắng - Hòa)
 function checkWin(index, player) {
     let row = Math.floor(index / 20);
     let col = index % 20;

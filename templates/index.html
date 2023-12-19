@@ -20,6 +20,19 @@
     </style>
 </head>
 <body>
+    <!--Form điền mã phòng và password-->
+    <form id="create-room-form">
+        <input type="text" id="create-room-code" placeholder="Room code">
+        <button type="submit">Create room</button>
+    </form>
+    <form id="join-room-form">
+        <input type="text" id="join-room-code" placeholder="Room code">
+        <button type="submit">Join room</button>
+    </form>
+
+    <!--Cập nhật trạng thái game-->
+    <div id="status"></div>
+
     <div id="board">
     </div>
     <script src="static/game.js"></script>
