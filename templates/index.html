@@ -3,40 +3,68 @@
 <head>
     <title>Caro Game</title>
     <style>
-        #board {
-            display: grid;
-            grid-template-columns: repeat(20, 0fr);
-            gap: 0px;
-        }
-        .cell {
-            width: 40px;
-            height: 40px;
-            border: 1px solid black;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-    </style>
+      #board {
+          display: grid;
+          grid-template-columns: repeat(20, 0fr);
+          gap: 0px;
+      }
+      .cell {
+          width: 40px;
+          height: 40px;
+          border: 1px solid black;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+      }
+      .center {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 100vh;
+      }
+      .button {
+          background-color: #4CAF50; /* Green */
+          border: none;
+          color: white;
+          padding: 15px 32px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+          transition-duration: 0.4s;
+          cursor: pointer;
+          width: 300px; /* Set a specific width for all buttons */
+      }
+      .button:hover {
+          background-color: white; 
+          color: black; 
+          border: 2px solid #4CAF50;
+      }
+      .logo {
+          width: 200px;
+          height: auto;
+          margin-bottom: 20px;
+      }
+      .title {
+          font-size: 24px;
+          font-weight: bold;
+          margin-bottom: 20px;
+      }
+      </style>
 </head>
 <body>
-    <!--Form điền mã phòng và password-->
-    <form id="create-room-form">
-        <input type="text" id="create-room-code" placeholder="Room code">
-        <button type="submit">Create room</button>
-    </form>
-    <form id="join-room-form">
-        <input type="text" id="join-room-code" placeholder="Room code">
-        <button type="submit">Join room</button>
-    </form>
-
-    <!--Cập nhật trạng thái game-->
-    <div id="status"></div>
-
-    <div id="board">
-    </div>
-    <script src="static/game.js"></script>
+  <div class="center">
+      <img class="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+      <div class="title">Game Caro - Project 1</div>
+      <button class="button" onclick="window.location.href='/caro-onl'">Chơi Caro Online</button>
+      <button class="button" onclick="window.location.href='/caro-computer'">Chơi Với Máy</button>
+      <button class="button" onclick="window.location.href='/caro-off'">Chơi Caro Offline 2 người</button>
+      <button class="button" onclick="window.location.href='/caro-2computer'">Chơi Máy Với Máy</button>
+  </div>
 </body>
-</html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+</html>

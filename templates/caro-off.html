@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caro Game</title>
+    <style>
+        #board {
+            display: grid;
+            grid-template-columns: repeat(20, 0fr);
+            gap: 0px;
+        }
+        .cell {
+            width: 40px;
+            height: 40px;
+            border: 1px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!--Cập nhật trạng thái game-->
+    <div id="status"></div>
+
+    <div id="board">
+    </div>
+</body>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+<script src="{{ url_for('static', filename='js/caro-onl.js') }}"></script>

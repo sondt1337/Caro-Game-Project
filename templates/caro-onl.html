@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caro Game</title>
+    <style>
+        #board {
+            display: grid;
+            grid-template-columns: repeat(20, 0fr);
+            gap: 0px;
+        }
+        .cell {
+            width: 40px;
+            height: 40px;
+            border: 1px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!--Form điền mã phòng và password-->
+    <form id="create-room-form">
+        <input type="text" id="create-room-code" placeholder="Room code">
+        <button type="submit">Create room</button>
+    </form>
+    <form id="join-room-form">
+        <input type="text" id="join-room-code" placeholder="Room code">
+        <button type="submit">Join room</button>
+    </form>
+
+    <!--Cập nhật trạng thái game-->
+    <div id="status"></div>
+
+    <div id="board">
+    </div>
+    <script src="static/game.js"></script>
+</body>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+<script src="{{ url_for('static', filename='js/game.js') }}"></script>
