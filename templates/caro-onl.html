@@ -20,11 +20,13 @@
     </style>
 </head>
 <body>
-    <!--Form điền mã phòng và password-->
+    <!--Form tạo mã phòng-->
     <form id="create-room-form">
         <input type="text" id="create-room-code" placeholder="Room code">
         <button type="submit">Create room</button>
     </form>
+
+    <!--form join phòng-->
     <form id="join-room-form">
         <input type="text" id="join-room-code" placeholder="Room code">
         <button type="submit">Join room</button>
@@ -35,8 +37,7 @@
 
     <div id="board">
     </div>
-    <script src="static/game.js"></script>
 </body>
 </html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-<script src="{{ url_for('static', filename='js/game.js') }}"></script>
+<script src="{{ url_for('static', filename='js/caro-onl.js') }}"></script>

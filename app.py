@@ -50,18 +50,15 @@ def on_join(data):
     rooms[room_code]['players'].append(request.sid)
     emit('join', {'room_code': room_code, 'player': player}, room=room_code)
 
-# Rời phòng
-@socketio.on('leave')
-def on_leave(data):
-    room_code = data['room_code']
-    if room_code in rooms and rooms[room_code]['players']:
-        rooms[room_code]['players'].remove(request.sid)
-    leave_room(room_code)
-    
+
 # Cập nhật các bước đánh của người chơi
 @socketio.on('move')
 def on_move(data):
     emit('move', data, room=data['room_code'])
+    
+@socketio.on('move_off')
+def on_move(data):
+    emit('move_off', data)
 
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=8000, debug=True)
