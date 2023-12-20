@@ -1,19 +1,26 @@
 # Caro Game Project
 ## Introduction
-- Sản phẩm "Cờ Caro cổ điển" phục vụ cho Project 1
-- Tác giả: Đinh Thái Sơn
-- studentID: 20210750
-- Frontend: HTML, CSS, JS (logic game), Bootstrap
-- Backend, Framework: Flask (python), WebSocket (Realtime)
+| Sản phẩm  | Caro Game                |
+| --------- | ------------------------ |
+| Sinh viên | Đinh Thái Sơn            |
+| MSSV      | 20210750                 |
+| Frontend  | HTML, CSS, JS, BOOTSTRAP |
+| Backend   | Flask, WebSocket         |
+
+## Interface
+### Trang chủ
+
+![](image.png)
 
 ## Demo
 Bạn có thể trải nghiệm sản phẩm "Cờ caro" thông qua demo dưới đây của tôi: [Demo Caro Game Project](https://project1caro.redipsspider.repl.co/)
+
 ## Project Overview
 Sản phẩm là game Caro cổ điển với 4 tính năng chính:
 
 ### Single Player Mode (Đấu với máy):
 
-Sử dụng giải thuật minimax + cắt tỉa Alpha-Beta để xây dựng chế độ này
+Sử dụng [giải thuật minimax](https://youtu.be/fTBEjsrZKso?si=RCymjDB1boUf3Eq8) để xây dựng chế độ này
 
 ### Local Multiplayer Mode (Đấu offline 2 người):
 
@@ -65,8 +72,6 @@ Trước khi xây dựng và chạy dự án, cần đảm báo python cần có
 # pip install flask
 # pip install flask-socketio
 # pip install jinja2
-# pip uninstall eventlet
-# pip install eventlet==0.30.0
 # pip install gevent
 # pip install gevent-websocket
 ```
