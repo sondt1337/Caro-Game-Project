@@ -1,8 +1,8 @@
 // Kết nối socket qua server
-// let socket = io.connect('https://project1caro.redipsspider.repl.co/');
+let socket = io.connect('https://project1caro.redipsspider.repl.co/');
 
 // Kết nối socket thông qua LAN 
-let socket = io.connect('http://' + document.domain + ':' + location.port);
+// let socket = io.connect('http://' + document.domain + ':' + location.port);
 // Tạo mã phòng để bắt đầu chơi
 document.getElementById('create-room-form').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -27,7 +27,7 @@ document.getElementById('join-room-form').addEventListener('submit', function(e)
     let roomCode = document.getElementById('join-room-code').value;
     socket.emit('join', { room_code: roomCode }, function(error) {
         if (error) {
-            alert(error);
+            alert("Can't join this room!");
         } else {
             alert('Joined room successfully');
         }
@@ -35,13 +35,11 @@ document.getElementById('join-room-form').addEventListener('submit', function(e)
 });
 
 
-
 // Khai báo bảng và người chơi đầu được sử dụng "X"
 let boardElement = document.getElementById('board');
 let statusElement = document.getElementById('status');
 let board = [];
 let currentPlayer;
-
 
 
 // Tạo bảng 20x20 
@@ -69,11 +67,14 @@ socket.on('join', function(data) {
     currentPlayer = data.player;
 });
 
+
 socket.on('move', function(data) {
     board[data.index].textContent = data.player;
     currentPlayer = data.player === 'X' ? 'O' : 'X';
     if (checkWin(data.index, data.player)) {
         statusElement.textContent = data.player + ' wins!';
+        alert(data.player + ' wins!');
+        resetGame();
     }
 });
 
@@ -111,4 +112,15 @@ function checkWin(index, player) {
         }
     }
     return false;
+}
+
+function resetGame() {
+    // Xóa tất cả các nước đi trên bảng
+    for (let i = 0; i < board.length; i++) {
+        board[i].textContent = '';
+    }
+    // Đặt lại người chơi hiện tại
+    currentPlayer = 'X';
+    // Cập nhật trạng thái trò chơi
+    statusElement.textContent = 'Game reset!!!';
 }

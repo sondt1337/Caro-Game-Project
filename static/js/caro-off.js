@@ -1,7 +1,7 @@
 // Kết nối socket thông qua LAN 
-let socket = io.connect('http://' + document.domain + ':' + location.port);
+// let socket = io.connect('http://' + document.domain + ':' + location.port);
 // Kết nối socket qua server
-// let socket = io.connect('https://project1caro.redipsspider.repl.co/');
+let socket = io.connect('https://project1caro.redipsspider.repl.co/');
 
 // Khai báo bảng và người chơi đầu được sử dụng "X"
 let boardElement = document.getElementById('board');
@@ -32,6 +32,8 @@ socket.on('move_off', function(data) {
     currentPlayer = data.player === 'X' ? 'O' : 'X';
     if (checkWin(data.index, data.player)) {
         statusElement.textContent = data.player + ' wins!';
+        alert(data.player + ' wins!');
+        resetGame();
     }
 });
 
@@ -69,4 +71,15 @@ function checkWin(index, player) {
         }
     }
     return false;
+}
+
+function resetGame() {
+    // Xóa tất cả các nước đi trên bảng
+    for (let i = 0; i < board.length; i++) {
+        board[i].textContent = '';
+    }
+    // Đặt lại người chơi hiện tại
+    currentPlayer = 'X';
+    // Cập nhật trạng thái trò chơi
+    statusElement.textContent = 'Game reset!!!';
 }

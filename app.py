@@ -59,6 +59,11 @@ def on_move(data):
 @socketio.on('move_off')
 def on_move(data):
     emit('move_off', data)
+    
+@socketio.on('move_computer')
+def on_move(data):
+    emit('move_computer', data)
+
 
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=8000, debug=True)
