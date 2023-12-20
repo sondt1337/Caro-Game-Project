@@ -1,25 +1,66 @@
 # Caro Game Project
 ## Introduction
-This repository contains the source code for the "Cờ Caro" game project, developed by Đinh Thái Sơn, studentID: 20210750 as part of the Project 1 course, under the guidance of our instructor.
+- Sản phẩm "Cờ Caro cổ điển" phục vụ cho Project 1
+- Tác giả: Đinh Thái Sơn
+- studentID: 20210750
+- Frontend: HTML, CSS, JS (logic game), Bootstrap
+- Backend, Framework: Flask (python), WebSocket (Realtime)
 
+## Demo
+Bạn có thể trải nghiệm sản phẩm "Cờ caro" thông qua demo dưới đây của tôi: [Demo Caro Game Project](https://project1caro.redipsspider.repl.co/)
 ## Project Overview
-The chosen project focuses on the classic board game "Cờ Caro" and aims to implement three key features:
+Sản phẩm là game Caro cổ điển với 4 tính năng chính:
 
-1. Single Player Mode (Đấu với máy):
+### Single Player Mode (Đấu với máy):
 
-Default gameplay mode where the player competes against an AI opponent.
-2. Local Multiplayer Mode (Đấu offline 2 người):
+Sử dụng giải thuật minimax + cắt tỉa Alpha-Beta để xây dựng chế độ này
 
-Allows two players to compete on the same device, taking turns to make their moves.
-3. Online Multiplayer Mode (Đấu online 2 người):
+### Local Multiplayer Mode (Đấu offline 2 người):
 
-Enables players to challenge each other over the internet, enhancing the game's appeal and interaction.
+Giúp 2 người chơi có thể chơi trên cùng 1 máy 
 
-## Project Structure
-The project is organized into a Python Flask application with WebSocket integration for real-time communication between players. The main components of the project include the game logic, user interface, and multiplayer functionality.
+### Online Multiplayer Mode (Đấu online 2 người):
+
+Giúp 2 người chơi có thể thao tác game trên 2 thiết bị bất kỳ thông qua mạng Internet:
+- Socket Flask đóng vai trò làm cầu nối giữa 2 thiết bị trên server, sẽ tự động cập nhật các bước di chuyển và status của game giữa 2 người chơi
+- Tính năng tạo mã phòng và tham gia phòng giúp những người chơi không bị xung đột khi tham gia game cũng như đạt tính bảo mật
+
+### Online Multiplayer Mode (Máy đấu máy):
+
+Xây dựng trên thuật toán giữa người và máy, lợi dụng tính "random" giữa các bước di chuyển đạt số điểm bằng nhau của giải thuật minimax tạo ra các bước di chuyển khác nhau giữa 2 máy mô phỏng như 2 người thật chơi
+
+## Cấu trúc của project
+Project được tổ chức thành một ứng dụng Python Flask với tích hợp WebSocket để giao tiếp thời gian thực giữa những người chơi. Các thành phần chính của dự án bao gồm logic trò chơi, giao diện người dùng và chức năng nhiều người chơi.
+
+```
+Caro-Game-Project
+├── app.py
+├── __pycache__
+│   └── game.cpython-39.pyc
+├── README.md
+├── static
+│   ├── css
+│   │   ├── styles-caro.css
+│   │   └── styles-home.css
+│   ├── images
+│   │   └── logo.png
+│   └── js
+│       ├── caro-2computer.js
+│       ├── caro-computer.js
+│       ├── caro-off.js
+│       ├── caro-onl.js
+│       └── main.js
+└── templates
+    ├── caro-2computer.html
+    ├── caro-computer.html
+    ├── caro-off.html
+    ├── caro-onl.html
+    └── index.html
+```
 
 ## Requirements
-To set up and run the project locally, ensure you have the following dependencies installed:
+Trước khi xây dựng và chạy dự án, cần đảm báo python cần có những thư viện sau:
+
 ```
 # pip install flask
 # pip install flask-socketio
@@ -31,11 +72,9 @@ To set up and run the project locally, ensure you have the following dependencie
 ```
 
 ## Local Deployment
-After installing the dependencies, you can run the application locally:
+Sau khi tải các thư viện đầy đủ, có thể chạy ứng dụng với câu lệnh sau:
 ```bash
 python app.py
 ```
 
-Visit http://localhost:5000/ (default port of Flask) in your web browser to access the game.
-
-Feel free to explore, contribute, or provide feedback on this Caro Game project!
+Xem trang http://localhost:8000/ (5000 là port mặc định của Flask, tuy nhiên ở trong app.py đã được thay đổi để chạy trên 0.0.0.0:8000) trong trình duyệt bất kỳ trên máy để vào game
