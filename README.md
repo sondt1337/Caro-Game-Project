@@ -1,16 +1,16 @@
 # Caro Game Project
 ## Introduction
-| Sản phẩm  | Caro Game                |
-| --------- | ------------------------ |
-| Sinh viên | Đinh Thái Sơn            |
-| MSSV      | 20210750                 |
-| Frontend  | HTML, CSS, JS, BOOTSTRAP |
-| Backend   | Flask, WebSocket         |
+| Sản phẩm  | Caro Game                        |
+| --------- | -------------------------------- |
+| Sinh viên | Đinh Thái Sơn                    |
+| MSSV      | 20210750                         |
+| Frontend  | HTML, CSS, JavaScript, bootstrap |
+| Backend   | Flask (Python), WebSocket        |
 
 ## Interface
 ### Trang chủ
 
-![](image.png)
+![](src_project/image.png)
 
 ## Demo
 Bạn có thể trải nghiệm sản phẩm "Cờ caro" thông qua demo dưới đây của tôi: [Demo Caro Game Project](https://project1caro.redipsspider.repl.co/)

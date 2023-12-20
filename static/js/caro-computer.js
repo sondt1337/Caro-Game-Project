@@ -60,8 +60,8 @@ socket.on('move_computer', function(data) {
 });
 
 function checkWin(index, player) {
-    let row = Math.floor(index / 20);
-    let col = index % 20;
+    let row = Math.floor(index / 20); // Lấy số hàng 
+    let col = index % 20; // Lấy số cột
     let directions = [
         [-1, -1],
         [-1, 0],
@@ -231,7 +231,7 @@ function getBestPoints() {
     return maxAttackScore >= maxDefenseScore ? bestAttackPoints : bestDefensePoints;
 }
 
-// Hàm lấy điểm của máy
+// Hàm di chuyển của máy
 function getComputerMove() {
     const bestPoints = getBestPoints();
     const randomIndex = Math.floor(Math.random() * bestPoints.length);
