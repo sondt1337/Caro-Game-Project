@@ -41,6 +41,10 @@ let statusElement = document.getElementById('status');
 let board = [];
 let currentPlayer;
 
+// Tạo biến để theo dõi số lượng người chơi trong phòng
+let playerCount = 0;
+// Biến để kiểm tra xem người chơi đã đánh trong lượt này chưa
+let isTurn = false;
 
 // Tạo bảng 20x20 
 for (let i = 0; i < 20; i++) {
@@ -55,22 +59,33 @@ for (let i = 0; i < 20; i++) {
 
 // Handle mỗi Click và xử lý logic sau mỗi lần chọn vị trí
 function handleClick(e) {
-    if (!currentPlayer) {
-        return;
+    // Kiểm tra xem ô đã được đánh chưa và xem người chơi đã đánh trong lượt này chưa
+    if (!isTurn) {
+        if (!currentPlayer) {
+            return;
+        }
+        e.target.textContent = currentPlayer;
+        socket.emit('move', { room_code: roomCode, index: board.indexOf(e.target), player: e.target.textContent });
+        isTurn = true; // Người chơi đã đánh trong lượt này
     }
-    e.target.textContent = currentPlayer;
-    socket.emit('move', { room_code: roomCode, index: board.indexOf(e.target), player: e.target.textContent });
 }
 
+// Khi một người chơi tham gia phòng, tăng số lượng người chơi
 socket.on('join', function(data) {
     roomCode = data.room_code;
-    currentPlayer = data.player;
+    playerCount++;
+    // Người chơi đầu tiên sẽ là 'X', người chơi thứ hai sẽ là 'O'
+    currentPlayer = playerCount === 1 ? 'X' : 'O';
+    // Hiển thị số lượng người chơi trong phòng
+    document.getElementById('player-count').textContent = 'Số người chơi: ' + playerCount;
 });
 
 
 socket.on('move', function(data) {
     board[data.index].textContent = data.player;
     currentPlayer = data.player === 'X' ? 'O' : 'X';
+    // Đặt lại isTurn sau mỗi lượt
+    isTurn = false;
     if (checkWin(data.index, data.player)) {
         statusElement.textContent = data.player + ' wins!';
         alert(data.player + ' wins!');
@@ -118,9 +133,13 @@ function resetGame() {
     // Xóa tất cả các nước đi trên bảng
     for (let i = 0; i < board.length; i++) {
         board[i].textContent = '';
+        // Thêm lại sự kiện click vào ô
+        board[i].addEventListener('click', handleClick, { once: true });
     }
     // Đặt lại người chơi hiện tại
     currentPlayer = 'X';
+    // Đặt lại isTurn
+    isTurn = false;
     // Cập nhật trạng thái trò chơi
     statusElement.textContent = 'Game reset!!!';
 }

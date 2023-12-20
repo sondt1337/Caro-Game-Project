@@ -77,6 +77,8 @@ function resetGame() {
     // Xóa tất cả các nước đi trên bảng
     for (let i = 0; i < board.length; i++) {
         board[i].textContent = '';
+        // Thêm lại sự kiện click vào ô
+        board[i].addEventListener('click', handleClick, { once: true });
     }
     // Đặt lại người chơi hiện tại
     currentPlayer = 'X';
