@@ -1,13 +1,13 @@
 # Caro Game Project
-## Introduction
+## Giới thiệu (Introduction)
 | Sản phẩm  | Caro Game                        |
 | --------- | -------------------------------- |
 | Sinh viên | Đinh Thái Sơn                    |
 | MSSV      | 20210750                         |
-| Frontend  | HTML, CSS, JavaScript, bootstrap |
+| Frontend  | HTML, CSS, JavaScript, Bootstrap |
 | Backend   | Flask (Python), WebSocket        |
 
-## Interface
+## Giao diện (Interface)
 ### Trang chủ
 
 ![](src_project/image.png)
@@ -15,28 +15,26 @@
 ## Demo
 Bạn có thể trải nghiệm sản phẩm "Cờ caro" thông qua demo dưới đây của tôi: [Demo Caro Game Project](https://project1caro.redipsspider.repl.co/)
 
-## Project Overview
-Sản phẩm là game Caro cổ điển với 4 tính năng chính:
+## Tổng quan về Project (Project Overview)
+Xây dựng một game Caro cổ điển với các tính năng đa dạng để mang lại trải nghiệm độc đáo cho người chơi. Dưới đây là mô tả chi tiết về các tính năng chính của dự án:
 
-### Single Player Mode (Đấu với máy):
+### Đấu với máy (Single Player Mode):
+- Sử dụng [giải thuật minimax](https://youtu.be/fTBEjsrZKso?si=RCymjDB1boUf3Eq8) để xây dựng chế độ này
+- Các bước di chuyển của máy sẽ dựa trên tính toán các kết quả bao gồm có tấn công (cố gắng chiếm được 5 bước thẳng hàng) và phòng thủ (bảo vệ không cho đối thủ chiếm được 5 bước thẳng hàng) và chọn bước di chuyển ứng với kết quả tốt nhất trong sự kiện đó (nếu có nhiều kết quả có giá trị tấn công/phòng thủ bằng nhau thì sẽ random) 
 
-Sử dụng [giải thuật minimax](https://youtu.be/fTBEjsrZKso?si=RCymjDB1boUf3Eq8) để xây dựng chế độ này
+### Đấu offline 2 người (Local Multiplayer Mode):
+- Cho phép hai người chơi có thể chơi trên cùng một máy.
+- Không sử dụng thuật toán, chỉ đơn giản kiểm tra chiến thắng khi có một trong hai người chơi đạt 5 bước thẳng hàng hoặc khi hết ô trống.
 
-### Local Multiplayer Mode (Đấu offline 2 người):
-
-Giúp 2 người chơi có thể chơi trên cùng 1 máy 
-
-### Online Multiplayer Mode (Đấu online 2 người):
-
-Giúp 2 người chơi có thể thao tác game trên 2 thiết bị bất kỳ thông qua mạng Internet:
-- Socket Flask đóng vai trò làm cầu nối giữa 2 thiết bị trên server, sẽ tự động cập nhật các bước di chuyển và status của game giữa 2 người chơi
+### Đấu online 2 người (Online Multiplayer Mode):
+- Dựa trên chế độ đấu offline 2 người (Local Multiplayer Mode) với tính năng giúp 2 người chơi có thể thao tác game trên 2 thiết bị bất kỳ thông qua mạng Internet
+- Socket Flask đóng vai trò làm cầu nối giữa 2 thiết bị trên server, sẽ tự động cập nhật các bước di chuyển và trạng thái của game giữa 2 người chơi
 - Tính năng tạo mã phòng và tham gia phòng giúp những người chơi không bị xung đột khi tham gia game cũng như đạt tính bảo mật
 
-### Online Multiplayer Mode (Máy đấu máy):
+### Máy đấu máy (Computer vs Computer Mode):
+- Chế độ này xây dựng dựa trên thuật toán giữa người và máy. Sử dụng tính ngẫu nhiên giữa các bước di chuyển đạt điểm bằng nhau của giải thuật minimax, tạo ra các bước di chuyển khác nhau giữa hai máy, mô phỏng như hai người chơi thực sự đang chơi.
 
-Xây dựng trên thuật toán giữa người và máy, lợi dụng tính "random" giữa các bước di chuyển đạt số điểm bằng nhau của giải thuật minimax tạo ra các bước di chuyển khác nhau giữa 2 máy mô phỏng như 2 người thật chơi
-
-## Cấu trúc của project
+## Cấu trúc của project (Project Structure)
 Project được tổ chức thành một ứng dụng Python Flask với tích hợp WebSocket để giao tiếp thời gian thực giữa những người chơi. Các thành phần chính của dự án bao gồm logic trò chơi, giao diện người dùng và chức năng nhiều người chơi.
 
 ```
@@ -65,7 +63,7 @@ Caro-Game-Project
     └── index.html
 ```
 
-## Requirements
+## Các yêu cầu trước khi chạy (Requirements)
 Trước khi xây dựng và chạy dự án, cần đảm báo python cần có những thư viện sau:
 
 ```
@@ -76,7 +74,8 @@ Trước khi xây dựng và chạy dự án, cần đảm báo python cần có
 # pip install gevent-websocket
 ```
 
-## Local Deployment
+## Chạy trên local (Local Deployment)
+
 Sau khi tải các thư viện đầy đủ, có thể chạy ứng dụng với câu lệnh sau:
 ```bash
 python app.py
