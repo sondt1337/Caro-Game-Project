@@ -1,8 +1,8 @@
 // Kết nối socket qua server
-let socket = io.connect('https://project1caro.redipsspider.repl.co/');
+//let socket = io.connect('https://project1caro.redipsspider.repl.co/');
 
 // Kết nối socket thông qua LAN 
-// let socket = io.connect('http://' + document.domain + ':' + location.port);
+let socket = io.connect('http://' + document.domain + ':' + location.port);
 // Tạo mã phòng để bắt đầu chơi
 document.getElementById('create-room-form').addEventListener('submit', function(e) {
     e.preventDefault();

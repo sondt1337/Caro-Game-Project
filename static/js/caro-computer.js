@@ -1,8 +1,8 @@
 // Kết nối socket qua server
-// let socket = io.connect('https://project1caro.redipsspider.repl.co/');
+let socket = io.connect('https://project1caro.redipsspider.repl.co/');
 
 // Kết nối socket thông qua LAN 
-let socket = io.connect('http://' + document.domain + ':' + location.port);
+// let socket = io.connect('http://' + document.domain + ':' + location.port);
 
 // Khai báo bảng và người chơi đầu được sử dụng "X"
 let boardElement = document.getElementById('board');
@@ -28,12 +28,15 @@ function handleClick(e) {
         e.target.textContent = currentPlayer;
         let index = board.indexOf(e.target);
         if (checkWin(index, currentPlayer)) {
-            statusElement.textContent = currentPlayer + ' wins!';
-            alert(data.player + ' wins!');
+            setTimeout(function() {
+                alert(currentPlayer + ' wins!');
+                resetGame();
+            }, 100); // Thêm trễ 100ms
 
         }
         currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
         socket.emit('move_computer', { index: index, player: e.target.textContent });
+
 
         // Máy tính đánh ngay sau khi người chơi đã đánh
         const computerMove = getComputerMove();
@@ -41,25 +44,19 @@ function handleClick(e) {
         if (board[computerMove[0] * 20 + computerMove[1]].textContent === '') {
             board[computerMove[0] * 20 + computerMove[1]].textContent = 'O';
             if (checkWin(computerMove[0] * 20 + computerMove[1], 'O')) {
-                statusElement.textContent = 'O wins!';
-                alert(data.player + 'wins!');
-                resetGame();
-                resetGame();
+                setTimeout(function() {
+                    alert('O wins!');
+                    resetGame();
+                }, 100); // Thêm trễ 100ms
             }
             currentPlayer = 'X';
         }
     }
 }
 
-
-
-
 socket.on('move_computer', function(data) {
     board[data.index].textContent = data.player;
     currentPlayer = data.player === 'X' ? 'O' : 'X';
-    if (checkWin(data.index, data.player)) {
-        statusElement.textContent = data.player + ' wins!';
-    }
 });
 
 function checkWin(index, player) {
