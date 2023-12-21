@@ -96,15 +96,15 @@ function checkWin(index, player) {
 // Hằng số đánh giá điểm
 const MAP_SCORE_COMPUTER = new Map([
     [5, Infinity],
-    [4, 2000],
-    [3, 500],
-    [2, 300],
-    [1, 100]
+    [4, 10000],
+    [3, 5000],
+    [2, 3000],
+    [1, 1000]
 ])
 
 const MAP_POINT_HUMAN = new Map([
-    [4, 999999],
-    [3, 1000],
+    [4, 1000000],
+    [3, 800],
     [2, 400],
     [1, 10],
     [0, 0]
