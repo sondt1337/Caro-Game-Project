@@ -1,8 +1,8 @@
 // Kết nối socket qua server
-let socket = io.connect('https://project1caro.redipsspider.repl.co/');
+// let socket = io.connect('https://project1caro.redipsspider.repl.co/');
 
 // Kết nối socket thông qua LAN 
-// let socket = io.connect('http://' + document.domain + ':' + location.port);
+let socket = io.connect('http');
 
 // Khai báo bảng và người chơi đầu được sử dụng "X"
 let boardElement = document.getElementById('board');
@@ -101,6 +101,7 @@ const MAP_SCORE_COMPUTER = new Map([
     [2, 300],
     [1, 100]
 ])
+
 const MAP_POINT_HUMAN = new Map([
     [4, 999999],
     [3, 1000],
