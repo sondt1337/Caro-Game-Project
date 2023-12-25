@@ -1,4 +1,8 @@
 #board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
     display: grid;
     grid-template-columns: repeat(20, 0fr);
     gap: 0px;

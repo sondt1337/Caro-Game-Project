@@ -1,6 +1,3 @@
-// Kết nối socket qua server
-// let socket = io.connect('https://project1caro.redipsspider.repl.co/');
-
 // Kết nối socket thông qua LAN 
 let socket = io.connect('http');
 

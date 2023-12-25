@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit, join_room, leave_room
+from flask import jsonify
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -37,18 +38,23 @@ def create():
     if room_code in rooms:
         return 'Room already exists', 400
     rooms[room_code] = {'players': []}
+    player_count = 0
     return 'Room created successfully'
+
+global_player_count = 0
 
 # Join phòng chơi (check các điều kiện)
 @socketio.on('join')
 def on_join(data):
+    global global_player_count
     room_code = data['room_code']
     if room_code not in rooms or len(rooms[room_code]['players']) >= 2:
         return 'Room is full', 400
+    player = {'id': request.sid, 'symbol': 'X' if len(rooms[room_code]['players']) == 0 else 'O'}
+    rooms[room_code]['players'].append(player)
     join_room(room_code)
-    player = 'X' if len(rooms[room_code]['players']) == 0 else 'O'
-    rooms[room_code]['players'].append(request.sid)
-    emit('join', {'room_code': room_code, 'player': player}, room=room_code)
+    emit('join', {'room_code': room_code, 'player': player['symbol']}, room=room_code)
+    global_player_count += 1
 
 
 # Cập nhật các bước đánh của người chơi
@@ -63,6 +69,13 @@ def on_move(data):
 @socketio.on('move_computer')
 def on_move(data):
     emit('move_computer', data)
+
+@app.route('/get_player_count/<room_code>', methods=['GET'])
+def get_player_count(room_code):
+    if room_code in rooms:
+        return str(len(rooms[room_code]['players']))
+    else:
+        return 'Room does not exist', 400
 
 
 if __name__ == '__main__':

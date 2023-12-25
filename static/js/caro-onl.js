@@ -1,8 +1,8 @@
 // Kết nối socket qua server (KHI KHỞI TẠO TRÊN SERVER)
-let socket = io.connect('https://project1caro.redipsspider.repl.co/');
+//let socket = io.connect('https://project1caro.redipsspider.repl.co/');
 
 // Kết nối socket thông qua LAN (BUILD TRÊN LOCAL)
-// let socket = io.connect('http://' + document.domain + ':' + location.port); 
+let socket = io.connect('http://' + document.domain + ':' + location.port);
 
 // Tạo mã phòng để bắt đầu chơi
 document.getElementById('create-room-form').addEventListener('submit', function(e) {
@@ -44,8 +44,6 @@ let currentPlayer;
 
 // Tạo biến để theo dõi số lượng người chơi trong phòng
 let playerCount = 0;
-// Biến để kiểm tra xem người chơi đã đánh trong lượt này chưa
-let isTurn = false;
 
 // Tạo bảng 20x20 
 for (let i = 0; i < 20; i++) {
@@ -60,33 +58,32 @@ for (let i = 0; i < 20; i++) {
 
 // Handle mỗi Click và xử lý logic sau mỗi lần chọn vị trí
 function handleClick(e) {
-    // Kiểm tra xem ô đã được đánh chưa và xem người chơi đã đánh trong lượt này chưa
-    if (!isTurn) {
-        if (!currentPlayer) {
-            return;
-        }
+    // Kiểm tra xem ô đã được đánh chưa
+    if (e.target.textContent === '') {
         e.target.textContent = currentPlayer;
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
         socket.emit('move', { room_code: roomCode, index: board.indexOf(e.target), player: e.target.textContent });
-        isTurn = true; // Người chơi đã đánh trong lượt này
     }
 }
 
-// Khi một người chơi tham gia phòng, tăng số lượng người chơi
+// Khi một người chơi tham gia phòng, lấy số lượng người chơi từ máy chủ
 socket.on('join', function(data) {
     roomCode = data.room_code;
-    playerCount++;
-    // Người chơi đầu tiên sẽ là 'X', người chơi thứ hai sẽ là 'O'
-    currentPlayer = playerCount === 1 ? 'X' : 'O';
-    // Hiển thị số lượng người chơi trong phòng
-    document.getElementById('player-count').textContent = 'Số người chơi: ' + playerCount;
+    currentPlayer = data.player;
+    // Lấy thông tin từ server
+    fetch('/get_player_count/' + roomCode)
+        .then(response => response.text())
+        .then(playerCount => {
+            // Hiển thị số lượng người chơi và thông tin roles trong phòng
+            document.getElementById('player-count').textContent = 'Số người chơi: ' + playerCount;
+            document.getElementById('player-info').textContent = 'Bạn là: ' + (playerCount % 2 === 0 ? 'X' : 'O');
+        });
 });
 
 
 socket.on('move', function(data) {
     board[data.index].textContent = data.player;
     currentPlayer = data.player === 'X' ? 'O' : 'X';
-    // Đặt lại isTurn sau mỗi lượt
-    isTurn = false;
     if (checkWin(data.index, data.player)) {
         statusElement.textContent = data.player + ' wins!';
         alert(data.player + ' wins!');
@@ -139,8 +136,6 @@ function resetGame() {
     }
     // Đặt lại người chơi hiện tại
     currentPlayer = 'X';
-    // Đặt lại isTurn
-    isTurn = false;
     // Cập nhật trạng thái trò chơi
     statusElement.textContent = 'Game reset!!!';
 }

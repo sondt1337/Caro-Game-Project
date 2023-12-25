@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>Caro Game</title>
-    <!--Fix responsive-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles-caro.css') }}">
 </head>
@@ -20,10 +19,9 @@
     </form>
     
     <p id="player-count">Số người chơi: 0</p>
-
+    <p id="player-info">Bạn là: </p>
     <!--Cập nhật trạng thái game-->
     <div id="status"></div>
-
     <div id="board">
     </div>
 </body>
