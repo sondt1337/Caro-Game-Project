@@ -23,6 +23,9 @@ function handleClick(e) {
     // Kiểm tra xem ô đã được đánh chưa
     if (e.target.textContent === '') {
         e.target.textContent = currentPlayer;
+        e.target.classList.add(currentPlayer.toLowerCase());
+        // Highlight cell sau khi đánh
+        e.target.classList.add('highlight');
         let index = board.indexOf(e.target);
         if (checkWin(index, currentPlayer)) {
             setTimeout(function() {
@@ -34,22 +37,25 @@ function handleClick(e) {
         currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
         socket.emit('move_computer', { index: index, player: e.target.textContent });
 
-
         // Máy tính đánh ngay sau khi người chơi đã đánh
         const computerMove = getComputerMove();
         // Kiểm tra xem ô đã được đánh chưa
         if (board[computerMove[0] * 20 + computerMove[1]].textContent === '') {
-            board[computerMove[0] * 20 + computerMove[1]].textContent = 'O';
-            if (checkWin(computerMove[0] * 20 + computerMove[1], 'O')) {
+            board[computerMove[0] * 20 + computerMove[1]].textContent = currentPlayer;
+            board[computerMove[0] * 20 + computerMove[1]].classList.add(currentPlayer.toLowerCase());
+            board[computerMove[0] * 20 + computerMove[1]].classList.add('highlight'); // Highlight the cell
+            if (checkWin(computerMove[0] * 20 + computerMove[1], currentPlayer)) {
                 setTimeout(function() {
-                    alert('O wins!');
+                    alert(currentPlayer + ' wins!');
                     resetGame();
                 }, 100); // Thêm trễ 100ms
             }
-            currentPlayer = 'X';
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
         }
     }
 }
+
+
 
 socket.on('move_computer', function(data) {
     board[data.index].textContent = data.player;
@@ -242,6 +248,8 @@ function resetGame() {
         board[i].textContent = '';
         // Thêm lại sự kiện click vào ô
         board[i].addEventListener('click', handleClick, { once: true });
+        // Xóa các sự kiện highlight và tô màu 
+        board[i].classList.remove('x', 'o', 'highlight');
     }
     // Đặt lại người chơi hiện tại
     currentPlayer = 'X';

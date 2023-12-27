@@ -1,5 +1,5 @@
-// Kết nối socket thông qua LAN 
-let socket = io.connect('http://');
+// Kết nối socket thông qua SERVER (BẮT BUỘC - nếu local thì kết nối qua https://)
+let socket = io.connect('https://project1caro.redipsspider.repl.co');
 
 // Khai báo bảng và người chơi đầu được sử dụng "X"
 let boardElement = document.getElementById('board');
@@ -21,6 +21,9 @@ for (let i = 0; i < 20; i++) {
 // Handle mỗi Click và xử lý logic sau mỗi lần chọn vị trí
 function handleClick(e) {
     e.target.textContent = currentPlayer;
+    e.target.classList.add(currentPlayer.toLowerCase());
+    // Highlight cell sau khi đánh
+    e.target.classList.add('highlight');
     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
     socket.emit('move_off', { index: board.indexOf(e.target), player: e.target.textContent });
 }
@@ -77,6 +80,8 @@ function resetGame() {
         board[i].textContent = '';
         // Thêm lại sự kiện click vào ô
         board[i].addEventListener('click', handleClick, { once: true });
+        // Xóa các sự kiện highlight và tô màu 
+        board[i].classList.remove('x', 'o', 'highlight');
     }
     // Đặt lại người chơi hiện tại
     currentPlayer = 'X';

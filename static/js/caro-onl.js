@@ -56,38 +56,85 @@ for (let i = 0; i < 20; i++) {
     }
 }
 
-// Handle mỗi Click và xử lý logic sau mỗi lần chọn vị trí
-function handleClick(e) {
-    // Kiểm tra xem ô đã được đánh chưa
-    if (e.target.textContent === '') {
-        e.target.textContent = currentPlayer;
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        socket.emit('move', { room_code: roomCode, index: board.indexOf(e.target), player: e.target.textContent });
-    }
-}
 
-// Khi một người chơi tham gia phòng, lấy số lượng người chơi từ máy chủ
+let roomCode;
+let check = [];
+let currentSid;
+// Khi một người chơi tham gia phòng, lấy số lượng người chơi từ server
 socket.on('join', function(data) {
     roomCode = data.room_code;
-    currentPlayer = data.player;
-    // Lấy thông tin từ server
-    fetch('/get_player_count/' + roomCode)
-        .then(response => response.text())
-        .then(playerCount => {
-            // Hiển thị số lượng người chơi và thông tin roles trong phòng
-            document.getElementById('player-count').textContent = 'Số người chơi: ' + playerCount;
-            document.getElementById('player-info').textContent = 'Bạn là: ' + (playerCount % 2 === 0 ? 'X' : 'O');
-        });
+    players = data.players;
+    currentSid = data.request_sid;
+
+    // Hiển thị số lượng người chơi và thông tin roles trong phòng
+    document.getElementById('player-count').textContent = 'Số người chơi: ' + players.length;
+    currentPlayer = players.find(player => player.id === currentSid);
+    if (check.length === 0 && currentPlayer === players[0]) {
+        check.push('X');
+    } else if (check.length === 0 && currentPlayer === players[1]) {
+        check.push('O');
+    }
+    // Kiểm tra xem có đủ 2 người chơi hay không và players[0] không phải là undefined
+    if (players.length === 2) {
+        players[0].symbol = 'X';
+        players[1].symbol = 'O';
+        // Kiểm tra xem currentPlayer có tồn tại không trước khi gán giá trị
+        let playerInfoElement = document.getElementById('player-info');
+        if (playerInfoElement) {
+            playerInfoElement.textContent = 'Bạn là: ' + check[0];
+        }
+    }
 });
 
+// Khai báo biến global để lưu trữ thông tin lượt đánh của người chơi hiện tại
+let currentTurn = 1;
 
-socket.on('move', function(data) {
-    board[data.index].textContent = data.player;
-    currentPlayer = data.player === 'X' ? 'O' : 'X';
-    if (checkWin(data.index, data.player)) {
-        statusElement.textContent = data.player + ' wins!';
-        alert(data.player + ' wins!');
-        resetGame();
+// Handle mỗi Click và xử lý logic sau mỗi lần chọn vị trí
+function handleClick(e) {
+    // if (currentTurn % 2 === turn[0]) {
+    // Kiểm tra xem ô đã được đánh chưa và xem có phải lượt của người chơi này không
+    if (e.target.textContent === '') {
+        e.target.textContent = check[0];
+        // Thêm CSS vào symbol
+        e.target.classList.add(check[0].toLowerCase());
+        e.target.classList.add('highlight');
+        if (checkWin(board.indexOf(e.target), check[0])) {
+            setTimeout(function() {
+                alert(check[0] + ' wins!');
+                resetGame();
+            }, 100); // Thêm trễ 100ms
+        } else {
+            currentTurn++;
+            socket.emit('playerMove', { room_code: roomCode, index: board.indexOf(e.target), player: e.target.textContent, currentTurn: currentTurn });
+        }
+    }
+    //} else {
+    //   alert('Chưa đến lượt của bạn!');
+    //}
+}
+
+// Socket listener để xác định lượt đánh của đối thủ
+socket.on('opponentMove', function(data) {
+    let index = data.index;
+    let opponentSymbol = (check[0] === 'X') ? 'O' : 'X';
+
+    // Kiểm tra xem ô đã được đánh chưa
+    if (board[index].textContent === '') {
+        board[index].textContent = opponentSymbol;
+        board[index].classList.add(opponentSymbol.toLowerCase());
+        // Highlight cell sau khi đánh
+        board[index].classList.add('highlight');
+
+        // Kiểm tra điều kiện thắng và xử lý
+        if (checkWin(index, opponentSymbol)) {
+            setTimeout(function() {
+                alert(opponentSymbol + ' wins!');
+                resetGame();
+            }, 100); // Thêm trễ 100ms
+        }
+
+        // Chuyển lượt cho người chơi hiện tại
+        currentTurn++;
     }
 });
 
@@ -133,6 +180,8 @@ function resetGame() {
         board[i].textContent = '';
         // Thêm lại sự kiện click vào ô
         board[i].addEventListener('click', handleClick, { once: true });
+        // Xóa các sự kiện highlight và tô màu 
+        board[i].classList.remove('x', 'o', 'highlight');
     }
     // Đặt lại người chơi hiện tại
     currentPlayer = 'X';

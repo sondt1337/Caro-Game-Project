@@ -46,21 +46,43 @@ global_player_count = 0
 # Join phòng chơi (check các điều kiện)
 @socketio.on('join')
 def on_join(data):
-    global global_player_count
-    room_code = data['room_code']
-    if room_code not in rooms or len(rooms[room_code]['players']) >= 2:
-        return 'Room is full', 400
-    player = {'id': request.sid, 'symbol': 'X' if len(rooms[room_code]['players']) == 0 else 'O'}
-    rooms[room_code]['players'].append(player)
-    join_room(room_code)
-    emit('join', {'room_code': room_code, 'player': player['symbol']}, room=room_code)
-    global_player_count += 1
+      global global_player_count
+      room_code = data['room_code']
+
+      if room_code not in rooms or len(rooms[room_code]['players']) >= 2:
+          return 'Room is full', 400
+
+      symbol = 'X' if global_player_count == 1 else 'O'
+      player = {'id': request.sid, 'symbol': symbol}
+      rooms[room_code]['players'].append(player)
+
+      join_room(room_code)
+
+      # Gửi thông tin của cả hai người chơi về client
+      emit('join', {'room_code': room_code, 'player': player, 'request_sid': request.sid, 'players': rooms[room_code]['players']}, room=room_code)
+
+      global_player_count += 1
 
 
 # Cập nhật các bước đánh của người chơi
-@socketio.on('move')
+@socketio.on('playerMove')
 def on_move(data):
-    emit('move', data, room=data['room_code'])
+  room_code = data['room_code']
+  player = next((player for player in rooms.get(room_code, {}).get('players', []) if player['id'] == request.sid), None)
+  if player:
+      # Gửi bước đánh của người chơi hiện tại đến tất cả người chơi trong phòng
+      emit('playerMove', data, room=room_code, include_self=True)
+      # Xác định đối thủ của người chơi hiện tại
+      opponent = next((p for p in rooms[room_code]['players'] if p['id'] != request.sid), None)
+      if opponent and player['symbol'] != opponent['symbol']:
+        # Gửi bước đánh của đối thủ đến toàn bộ phòng, tránh gửi lại cho chính người chơi hiện tại
+        emit('opponentMove', data, room=room_code, skip_sid=request.sid)
+      else:
+          # Handle nếu không phải lượt của người chơi hoặc không xác định được đối thủ
+          emit('invalidMove', {'message': 'It is not your turn or opponent not found'}, room=request.sid)
+  else:
+      # Handle nếu không phải người chơi trong phòng
+      emit('invalidMove', {'message': 'You are not in this room'}, room=request.sid)
     
 @socketio.on('move_off')
 def on_move(data):

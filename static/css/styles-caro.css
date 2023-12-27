@@ -12,8 +12,34 @@
     width: 40px;
     height: 40px;
     border: 1px solid black;
-    display: flex;
-    align-items: center;
+    display: inline-flex;
     justify-content: center;
-    cursor: pointer;
+    align-items: center;
+    font-size: 20px;
+}
+
+.cell.x {
+    color: #ff0000;
+    font-family: 'Arial', sans-serif;
+}
+
+.cell.o {
+    color: #0000ff;
+    font-family: 'Arial', sans-serif;
+}
+
+@keyframes blink {
+    0% {
+        background-color: #ffff99;
+    }
+    50% {
+        background-color: transparent;
+    }
+    100% {
+        background-color: #ffff99;
+    }
+}
+
+.cell.highlight {
+    animation: blink 0.3s linear;
 }
