@@ -190,10 +190,10 @@ function resetGame() {
     statusElement.textContent = 'Game reset!!!';
 }
 
-
+var remainingTime = 300; // Cho mỗi người khoảng 5 phút --> biến gloabal
+var countdown;
 
 function startCountdown() {
-    let remainingTime = 300; // Cho mỗi người khoảng 5 phút
     countdown = setInterval(function() {
         const minutes = Math.floor(remainingTime / 60);
         const seconds = remainingTime % 60;
