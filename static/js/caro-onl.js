@@ -1,8 +1,8 @@
 // Kết nối socket qua server (KHI KHỞI TẠO TRÊN SERVER)
-let socket = io.connect('https://project1caro.redipsspider.repl.co/');
+// let socket = io.connect('https://project1caro.redipsspider.repl.co/');
 
 // Kết nối socket thông qua LAN (BUILD TRÊN LOCAL)
-//let socket = io.connect('http://' + document.domain + ':' + location.port);
+let socket = io.connect('http://' + document.domain + ':' + location.port);
 
 // Tạo mã phòng để bắt đầu chơi
 document.getElementById('create-room-form').addEventListener('submit', function(e) {
@@ -86,32 +86,36 @@ socket.on('join', function(data) {
     }
 });
 
-// Khai báo biến global để lưu trữ thông tin lượt đánh của người chơi hiện tại
 let currentTurn = 1;
 
 // Handle mỗi Click và xử lý logic sau mỗi lần chọn vị trí
 function handleClick(e) {
-    // if (currentTurn % 2 === turn[0]) {
-    // Kiểm tra xem ô đã được đánh chưa và xem có phải lượt của người chơi này không
-    if (e.target.textContent === '') {
-        e.target.textContent = check[0];
-        // Thêm CSS vào symbol
-        e.target.classList.add(check[0].toLowerCase());
-        e.target.classList.add('highlight');
-        if (checkWin(board.indexOf(e.target), check[0])) {
-            setTimeout(function() {
-                alert(check[0] + ' wins!');
-                resetGame();
-            }, 100); // Thêm trễ 100ms
-        } else {
-            currentTurn++;
-            socket.emit('playerMove', { room_code: roomCode, index: board.indexOf(e.target), player: e.target.textContent, currentTurn: currentTurn });
-        }
+
+    if (currentTurn % 2 === ((check[0] === players[0].symbol) ? 1 : 0)) {
+        // Kiểm tra xem ô đã được đánh chưa và xem có phải lượt của người chơi này không
+        setTimeout(function() {
+            if (e.target.textContent === '') {
+                e.target.textContent = check[0];
+                // Thêm CSS vào symbol
+                e.target.classList.add(check[0].toLowerCase());
+                e.target.classList.add('highlight');
+                if (checkWin(board.indexOf(e.target), check[0])) {
+                    setTimeout(function() {
+                        alert(check[0] + ' wins!');
+                        resetGame();
+                    }, 100); // Thêm trễ 100ms
+                } else {
+                    currentTurn++;
+                }
+                socket.emit('playerMove', { room_code: roomCode, index: board.indexOf(e.target), player: e.target.textContent, currentTurn: currentTurn });
+            } else {
+                alert('Chưa đến lượt của bạn!');
+            }
+        }, 10000);
     }
-    //} else {
-    //   alert('Chưa đến lượt của bạn!');
-    //}
+
 }
+
 
 // Socket listener để xác định lượt đánh của đối thủ
 socket.on('opponentMove', function(data) {
@@ -122,7 +126,6 @@ socket.on('opponentMove', function(data) {
     if (board[index].textContent === '') {
         board[index].textContent = opponentSymbol;
         board[index].classList.add(opponentSymbol.toLowerCase());
-        // Highlight cell sau khi đánh
         board[index].classList.add('highlight');
 
         // Kiểm tra điều kiện thắng và xử lý
@@ -185,6 +188,7 @@ function resetGame() {
     }
     // Đặt lại người chơi hiện tại
     currentPlayer = 'X';
+    currentTurn = 1;
     // Cập nhật trạng thái trò chơi
     statusElement.textContent = 'Game reset!!!';
 }

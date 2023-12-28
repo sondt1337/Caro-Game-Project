@@ -43,3 +43,45 @@
 .cell.highlight {
     animation: blink 0.3s linear;
 }
+
+.form-container {
+    margin: 4px;
+}
+
+.form-container input {
+    border-radius: 4px;
+    border-color: gray;
+    border-width: 1px;
+    height: 25px;
+    margin-right: 4px;
+}
+
+.form-container button[type="submit"] {
+    background-color: #007bff;
+    /* Bootstrap primary color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100px;
+    height: 30px;
+}
+
+
+/* Specific styles for create-room-form */
+
+#create-room-form {
+    background-color: #ffffff;
+}
+
+#create-room-code {
+    placeholder: "Tạo mã phòng";
+}
+
+#join-room-form {
+    background-color: #ffffff;
+}
+
+#join-room-code {
+    placeholder: "Mã phòng";
+}

@@ -6,17 +6,18 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles-caro.css') }}">
 </head>
 <body>
-    <!--Form tạo mã phòng-->
+  <div class="form-container">
     <form id="create-room-form">
         <input type="text" id="create-room-code" placeholder="Room code">
         <button type="submit">Create room</button>
     </form>
-
-    <!--form join phòng-->
+  </div>
+  <div class="form-container">
     <form id="join-room-form">
         <input type="text" id="join-room-code" placeholder="Room code">
         <button type="submit">Join room</button>
     </form>
+  </div>
     
     <p id="player-count">Số người chơi: 0</p>
     <p id="player-info">Đang chờ đủ 2 người chơi</p>
