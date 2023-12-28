@@ -90,30 +90,27 @@ let currentTurn = 1;
 
 // Handle mỗi Click và xử lý logic sau mỗi lần chọn vị trí
 function handleClick(e) {
-
+    setTimeout(startCountdown, 0);
     if (currentTurn % 2 === ((check[0] === players[0].symbol) ? 1 : 0)) {
         // Kiểm tra xem ô đã được đánh chưa và xem có phải lượt của người chơi này không
-        setTimeout(function() {
-            if (e.target.textContent === '') {
-                e.target.textContent = check[0];
-                // Thêm CSS vào symbol
-                e.target.classList.add(check[0].toLowerCase());
-                e.target.classList.add('highlight');
-                if (checkWin(board.indexOf(e.target), check[0])) {
-                    setTimeout(function() {
-                        alert(check[0] + ' wins!');
-                        resetGame();
-                    }, 100); // Thêm trễ 100ms
-                } else {
-                    currentTurn++;
-                }
-                socket.emit('playerMove', { room_code: roomCode, index: board.indexOf(e.target), player: e.target.textContent, currentTurn: currentTurn });
+        if (e.target.textContent === '') {
+            e.target.textContent = check[0];
+            // Thêm CSS vào symbol
+            e.target.classList.add(check[0].toLowerCase());
+            e.target.classList.add('highlight');
+            if (checkWin(board.indexOf(e.target), check[0])) {
+                setTimeout(function() {
+                    alert(check[0] + ' wins!');
+                    resetGame();
+                }, 100); // Thêm trễ 100ms
             } else {
-                alert('Chưa đến lượt của bạn!');
+                currentTurn++;
             }
-        }, 10000);
+            socket.emit('playerMove', { room_code: roomCode, index: board.indexOf(e.target), player: e.target.textContent, currentTurn: currentTurn });
+        } else {
+            alert('Chưa đến lượt của bạn!');
+        }
     }
-
 }
 
 
@@ -191,4 +188,22 @@ function resetGame() {
     currentTurn = 1;
     // Cập nhật trạng thái trò chơi
     statusElement.textContent = 'Game reset!!!';
+}
+
+
+
+function startCountdown() {
+    let remainingTime = 300; // Cho mỗi người khoảng 5 phút
+    countdown = setInterval(function() {
+        const minutes = Math.floor(remainingTime / 60);
+        const seconds = remainingTime % 60;
+        const formattedTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        document.getElementById('countdown').textContent = 'Thời gian còn lại: ' + formattedTime;
+        remainingTime--;
+        if (remainingTime <= 0) {
+            clearInterval(countdown);
+            alert('Hết giờ! Bạn đã thua.');
+            resetGame();
+        }
+    }, 1000); // Cập nhật mỗi 1 giây
 }
