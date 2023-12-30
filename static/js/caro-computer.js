@@ -253,6 +253,4 @@ function resetGame() {
     }
     // Đặt lại người chơi hiện tại
     currentPlayer = 'X';
-    // Cập nhật trạng thái trò chơi
-    statusElement.textContent = 'Game reset!!!';
 }

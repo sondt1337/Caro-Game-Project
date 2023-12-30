@@ -1,3 +1,8 @@
+body {
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
 .center {
     display: flex;
     flex-direction: column;
@@ -8,7 +13,6 @@
 
 .button {
     background-color: #49a24c;
-    /* Green */
     border: none;
     color: white;
     padding: 15px 32px;
@@ -20,13 +24,14 @@
     transition-duration: 0.4s;
     cursor: pointer;
     width: 300px;
-    /* Set a specific width for all buttons */
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
 .button:hover {
     background-color: white;
     color: black;
     border: 2px solid #4CAF50;
+    transform: scale(1.1);
 }
 
 .logo {
@@ -38,5 +43,10 @@
 .title {
     font-size: 24px;
     font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.intro {
+    text-align: center;
     margin-bottom: 20px;
 }

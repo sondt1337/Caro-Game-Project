@@ -63,6 +63,27 @@ def on_join(data):
 
       global_player_count += 1
 
+# Rời phòng chơi
+@socketio.on('leave')
+def on_leave(data):
+    global global_player_count
+    room_code = data['room_code']
+
+    if room_code not in rooms:
+        return 'Room does not exist', 400
+
+    player = next((player for player in rooms[room_code]['players'] if player['id'] == request.sid), None)
+    if player is None:
+        return 'Player not in room', 400
+
+    rooms[room_code]['players'].remove(player)
+    leave_room(room_code)
+
+    # Gửi thông tin về việc rời phòng về client
+    emit('leave', {'room_code': room_code, 'player': player, 'request_sid': request.sid, 'players': rooms[room_code]['players']}, room=room_code)
+
+    global_player_count -= 1
+
 
 # Cập nhật các bước đánh của người chơi
 @socketio.on('playerMove')
@@ -91,14 +112,6 @@ def on_move(data):
 @socketio.on('move_computer')
 def on_move(data):
     emit('move_computer', data)
-
-@app.route('/get_player_count/<room_code>', methods=['GET'])
-def get_player_count(room_code):
-    if room_code in rooms:
-        return str(len(rooms[room_code]['players']))
-    else:
-        return 'Room does not exist', 400
-
 
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=8000, debug=True)

@@ -6,12 +6,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles-caro.css') }}">
 </head>
 <body>
+    <h1 style="text-align: center;">Caro Game</h1>
     <!--Cập nhật trạng thái game-->
     <div id="status"></div>
     <div id="board">
     </div>
 
 </body>
+<script>
+    alert('Chế độ: Người đấu Người offline --> X đi trước, O đi sau');
+</script>
 </html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 <script src="{{ url_for('static', filename='js/caro-off.js') }}"></script>

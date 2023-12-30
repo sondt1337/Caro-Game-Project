@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles-caro.css') }}">
 </head>
 <body>
+  <h1 style="text-align: center;">Caro Game</h1>
   <div class="form-container">
     <form id="create-room-form">
         <input type="text" id="create-room-code" placeholder="Room code">
@@ -18,6 +19,8 @@
         <button type="submit">Join room</button>
     </form>
   </div>
+  <div id="current-room">Phòng hiện tại: Chưa có</div>
+  <button id="leave-room-button" style="display: none;" type= "submit">Rời phòng</button>
     
     <p id="player-count">Số người chơi: 0</p>
     <p id="player-info">Đang chờ đủ 2 người chơi</p>
@@ -28,6 +31,9 @@
     <div id="board">
     </div>
 </body>
+<script>
+  alert('Chế độ: Người đấu Người online --> Tạo phòng và mời người chơi khác vào phòng');
+</script>
 </html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 <script src="{{ url_for('static', filename='js/caro-onl.js') }}"></script>

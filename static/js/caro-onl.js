@@ -1,8 +1,8 @@
 // Kết nối socket qua server (KHI KHỞI TẠO TRÊN SERVER)
-let socket = io.connect('https://project1caro.redipsspider.repl.co/');
+// let socket = io.connect('https://project1caro.redipsspider.repl.co/');
 
 // Kết nối socket thông qua LAN (BUILD TRÊN LOCAL)
-// let socket = io.connect('http://' + document.domain + ':' + location.port);
+let socket = io.connect('http://' + document.domain + ':' + location.port);
 
 // Tạo mã phòng để bắt đầu chơi
 document.getElementById('create-room-form').addEventListener('submit', function(e) {
@@ -15,12 +15,12 @@ document.getElementById('create-room-form').addEventListener('submit', function(
         })
     }).then(response => {
         if (!response.ok) {
-            throw new Error('Failed to create room');
+            alert('Tạo phòng không thành công! (Phòng đã tồn tại)');
+        } else {
+            alert('Tạo phòng thành công --> Hãy tham gia phòng này!');
         }
-        alert('Room created successfully');
     });
 });
-
 
 // Lấy room-form từ Frontend để kiểm tra mã phòng 
 document.getElementById('join-room-form').addEventListener('submit', function(e) {
@@ -28,12 +28,32 @@ document.getElementById('join-room-form').addEventListener('submit', function(e)
     let roomCode = document.getElementById('join-room-code').value;
     socket.emit('join', { room_code: roomCode }, function(error) {
         if (error) {
-            alert("Can't join this room!");
+            alert("Không thể vào phòng này!");
         } else {
-            alert('Joined room successfully');
+            // Ẩn cả khối chứa form tạo phòng và form tham gia phòng
+            document.getElementById('create-room-form').parentElement.style.display = 'none';
+            document.getElementById('join-room-form').parentElement.style.display = 'none';
+            // Hiển thị thông tin về phòng hiện tại và nút để rời phòng
+            document.getElementById('current-room').innerText = 'Phòng hiện tại: ' + roomCode;
+            document.getElementById('leave-room-button').style.display = 'block';
         }
     });
 });
+
+// Khi một người chơi rời phòng
+document.getElementById('leave-room-button').addEventListener('click', function(e) {
+    e.preventDefault();
+    // Gửi yêu cầu rời phòng đến server
+    socket.emit('leave', { room_code: roomCode }, function(error) {
+        if (error) {
+            alert("Không thể rời phòng này!");
+        } else {
+            // Làm mới trang
+            location.reload();
+        }
+    });
+});
+
 
 
 // Khai báo bảng và người chơi đầu được sử dụng "X"
@@ -87,11 +107,43 @@ socket.on('join', function(data) {
     }
 });
 
+// Khi một người chơi rời phòng, cập nhật lại thông tin phòng
+socket.on('leave', function(data) {
+    roomCode = data.room_code;
+    players = data.players;
+    currentSid = data.request_sid;
+
+    // Hiển thị lại số lượng người chơi và thông tin roles trong phòng
+    document.getElementById('player-count').textContent = 'Số người chơi: ' + players.length;
+    currentPlayer = players.find(player => player.id === currentSid);
+    if (check.length === 0 && currentPlayer === players[0]) {
+        check.push('X');
+    } else if (check.length === 0 && currentPlayer === players[1]) {
+        check.push('O');
+    }
+    // Kiểm tra xem có đủ 2 người chơi hay không và players[0] không phải là undefined
+    if (players.length === 2) {
+        players[0].symbol = 'X';
+        players[1].symbol = 'O';
+        // Kiểm tra xem currentPlayer có tồn tại không trước khi gán giá trị
+        let playerInfoElement = document.getElementById('player-info');
+        if (playerInfoElement) {
+            playerInfoElement.textContent = 'Bạn là: ' + check[0];
+        }
+    } else if (players.length === 1) {
+        players[0].symbol = '';
+        let playerInfoElement = document.getElementById('player-info');
+        if (playerInfoElement) {
+            playerInfoElement.textContent = 'Đang chờ đủ 2 người chơi';
+        }
+    }
+});
+
+
 let currentTurn = 1;
 
 // Handle mỗi Click và xử lý logic sau mỗi lần chọn vị trí
 function handleClick(e) {
-    setTimeout(startCountdown, 0); // đang có vấn đề
     if (currentTurn % 2 === ((check[0] === players[0].symbol) ? 1 : 0)) {
         // Kiểm tra xem ô đã được đánh chưa và xem có phải lượt của người chơi này không
         if (e.target.textContent === '') {
@@ -108,6 +160,7 @@ function handleClick(e) {
                 currentTurn++;
             }
             socket.emit('playerMove', { room_code: roomCode, index: board.indexOf(e.target), player: e.target.textContent, currentTurn: currentTurn });
+            setTimeout(startCountdown, 0); // Bắt đầu đếm ngược cho đối thủ
         } else {
             alert('Chưa đến lượt của bạn!');
         }
@@ -136,6 +189,7 @@ socket.on('opponentMove', function(data) {
 
         // Chuyển lượt cho người chơi hiện tại
         currentTurn++;
+        setTimeout(startCountdown, 0); // Bắt đầu đếm ngược cho đối thủ
     }
 });
 
@@ -187,8 +241,6 @@ function resetGame() {
     // Đặt lại người chơi hiện tại
     currentPlayer = 'X';
     currentTurn = 1;
-    // Cập nhật trạng thái trò chơi
-    statusElement.textContent = 'Game reset!!!';
 }
 
 var remainingTime; // Cho mỗi người khoảng 5 phút --> biến gloabal
