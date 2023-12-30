@@ -62,6 +62,7 @@ let check = [];
 let currentSid;
 // Khi một người chơi tham gia phòng, lấy số lượng người chơi từ server
 socket.on('join', function(data) {
+    resetGame() // đang có vấn đề
     roomCode = data.room_code;
     players = data.players;
     currentSid = data.request_sid;
@@ -90,7 +91,7 @@ let currentTurn = 1;
 
 // Handle mỗi Click và xử lý logic sau mỗi lần chọn vị trí
 function handleClick(e) {
-    setTimeout(startCountdown, 0);
+    setTimeout(startCountdown, 0); // đang có vấn đề
     if (currentTurn % 2 === ((check[0] === players[0].symbol) ? 1 : 0)) {
         // Kiểm tra xem ô đã được đánh chưa và xem có phải lượt của người chơi này không
         if (e.target.textContent === '') {
@@ -190,10 +191,12 @@ function resetGame() {
     statusElement.textContent = 'Game reset!!!';
 }
 
-var remainingTime = 300; // Cho mỗi người khoảng 5 phút --> biến gloabal
+var remainingTime; // Cho mỗi người khoảng 5 phút --> biến gloabal
 var countdown;
 
 function startCountdown() {
+    clearInterval(countdown);
+    remainingTime = 300;
     countdown = setInterval(function() {
         const minutes = Math.floor(remainingTime / 60);
         const seconds = remainingTime % 60;
