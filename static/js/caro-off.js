@@ -1,5 +1,5 @@
 // Kết nối socket thông qua SERVER (BẮT BUỘC - nếu local thì kết nối qua https://)
-let socket = io.connect('https://project1caro.redipsspider.repl.co');
+let socket = io.connect('https://1df23f47-644a-4a2f-92f0-e2c1ed4d8666-00-1gbez3q37p9dp.pike.replit.dev/');
 
 // Khai báo bảng và người chơi đầu được sử dụng "X"
 let boardElement = document.getElementById('board');

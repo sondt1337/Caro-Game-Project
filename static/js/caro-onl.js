@@ -46,7 +46,7 @@ document.getElementById('leave-room-button').addEventListener('click', function(
     // Gửi yêu cầu rời phòng đến server
     socket.emit('leave', { room_code: roomCode }, function(error) {
         if (error) {
-            alert("Không thể rời phòng này!");
+            alert("Xảy ra lỗi, vui lòng thử lại sau!");
         } else {
             // Làm mới trang
             location.reload();
@@ -103,11 +103,13 @@ socket.on('join', function(data) {
         if (playerInfoElement) {
             playerInfoElement.textContent = 'Bạn là: ' + check[0];
         }
+        resetGame();
     }
 });
 
 // Khi một người chơi rời phòng, cập nhật lại thông tin phòng
 socket.on('leave', function(data) {
+    resetGame();
     roomCode = data.room_code;
     players = data.players;
     currentSid = data.request_sid;
