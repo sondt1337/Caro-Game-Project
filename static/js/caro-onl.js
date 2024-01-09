@@ -1,8 +1,8 @@
 // Kết nối socket qua server (KHI KHỞI TẠO TRÊN SERVER)
-// let socket = io.connect('https://project1caro.redipsspider.repl.co/');
+let socket = io.connect('https://1df23f47-644a-4a2f-92f0-e2c1ed4d8666-00-1gbez3q37p9dp.pike.replit.dev/');
 
 // Kết nối socket thông qua LAN (BUILD TRÊN LOCAL)
-let socket = io.connect('http://' + document.domain + ':' + location.port);
+// let socket = io.connect('http://' + document.domain + ':' + location.port);
 
 // Tạo mã phòng để bắt đầu chơi
 document.getElementById('create-room-form').addEventListener('submit', function(e) {
@@ -82,7 +82,6 @@ let check = [];
 let currentSid;
 // Khi một người chơi tham gia phòng, lấy số lượng người chơi từ server
 socket.on('join', function(data) {
-    resetGame() // đang có vấn đề
     roomCode = data.room_code;
     players = data.players;
     currentSid = data.request_sid;
@@ -104,7 +103,6 @@ socket.on('join', function(data) {
         if (playerInfoElement) {
             playerInfoElement.textContent = 'Bạn là: ' + check[0];
         }
-        startCountdown(); // bắt đầu đếm khi đủ 2 người vào game
     }
 });
 
@@ -161,7 +159,8 @@ function handleClick(e) {
                 currentTurn++;
             }
             socket.emit('playerMove', { room_code: roomCode, index: board.indexOf(e.target), player: e.target.textContent, currentTurn: currentTurn });
-            setTimeout(startCountdown, 0); // Bắt đầu đếm ngược cho đối thủ
+            stopCountdownme(); // Dừng đếm khi người chơi hiện tại di chuyển
+            startCountdownenemy();
         } else {
             alert('Chưa đến lượt của bạn!');
         }
@@ -190,7 +189,8 @@ socket.on('opponentMove', function(data) {
 
         // Chuyển lượt cho người chơi hiện tại
         currentTurn++;
-        setTimeout(startCountdown, 0); // Bắt đầu đếm ngược cho đối thủ
+        setTimeout(startCountdownme, 0);
+        setTimeout(stopCountdownenemy, 0);
     }
 });
 
@@ -242,25 +242,59 @@ function resetGame() {
     // Đặt lại người chơi hiện tại
     currentPlayer = 'X';
     currentTurn = 1;
-    startCountdown();
+    startCountdownenemy();
+    startCountdownme();
+    stopCountdownme();
+    stopCountdownenemy();
 }
 
-var remainingTime; // Cho mỗi người khoảng 5 phút --> biến gloabal
-var countdown;
+var countdownne;
+var remainingTimeme; // Cho mỗi người khoảng 5 phút --> biến gloabal
 
-function startCountdown() {
-    clearInterval(countdown);
-    remainingTime = 300;
-    countdown = setInterval(function() {
-        const minutes = Math.floor(remainingTime / 60);
-        const seconds = remainingTime % 60;
+var countdownenemy;
+var remainingTimeenemy;
+
+function startCountdownme() {
+    clearInterval(countdownme);
+    remainingTimeme = 300;
+    countdownme = setInterval(function() {
+        const minutes = Math.floor(remainingTimeme / 60);
+        const seconds = remainingTimeme % 60;
         const formattedTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        document.getElementById('countdown').textContent = 'Thời gian còn lại: ' + formattedTime;
-        remainingTime--;
-        if (remainingTime <= 0) {
-            clearInterval(countdown);
-            alert('Hết giờ! Bạn đã thua.');
+        document.getElementById('countdownme').textContent = 'Thời gian còn lại của bạn: ' + formattedTime;
+        remainingTimeme--;
+        if (remainingTimeme <= -2) {
+            clearInterval(countdownme);
+            alert('Hết giờ! Bạn đã thua. Bấm để chơi ván khác!');
             resetGame();
         }
     }, 1000); // Cập nhật mỗi 1 giây
+}
+
+function startCountdownenemy() {
+    clearInterval(countdownenemy);
+    remainingTimeenemy = 300;
+    countdownenemy = setInterval(function() {
+        const minutes = Math.floor(remainingTimeenemy / 60);
+        const seconds = remainingTimeenemy % 60;
+        const formattedTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        document.getElementById('countdownenemy').textContent = 'Thời gian còn lại của đối thủ: ' + formattedTime;
+        remainingTimeenemy--;
+        if (remainingTimeenemy <= -2) {
+            clearInterval(countdownenemy);
+            alert('Đối thủ đã thua. Bấm để chơi ván khác!');
+            resetGame();
+        }
+    }, 1000); // Cập nhật mỗi 1 giây
+}
+
+// Hàm dừng đếm khi người chơi di chuyển
+function stopCountdownme() {
+    clearInterval(countdownme);
+    document.getElementById('countdownme').textContent = 'Thời gian còn lại của bạn: 5:00';
+}
+
+function stopCountdownenemy() {
+    clearInterval(countdownenemy);
+    document.getElementById('countdownenemy').textContent = 'Thời gian còn lại của đối thủ: 5:00';
 }
