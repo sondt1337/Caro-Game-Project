@@ -1,0 +1,6 @@
+- tạo thành công leave game
+- tạo thành công đếm thời gian (khi bắt đầu game )
+
+- nhiệm vụ: 
+	+ phân chia 2 biến time1, time2 cho 2 người chơi (làm cho 2 người có 2 mốc tg khác nhau để xét tính thắng thua)
+	+ 

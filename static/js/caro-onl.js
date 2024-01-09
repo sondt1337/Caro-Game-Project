@@ -1,8 +1,8 @@
 // Kết nối socket qua server (KHI KHỞI TẠO TRÊN SERVER)
-let socket = io.connect('https://project1caro.redipsspider.repl.co/');
+// let socket = io.connect('https://project1caro.redipsspider.repl.co/');
 
 // Kết nối socket thông qua LAN (BUILD TRÊN LOCAL)
-// let socket = io.connect('http://' + document.domain + ':' + location.port);
+let socket = io.connect('http://' + document.domain + ':' + location.port);
 
 // Tạo mã phòng để bắt đầu chơi
 document.getElementById('create-room-form').addEventListener('submit', function(e) {
@@ -104,6 +104,7 @@ socket.on('join', function(data) {
         if (playerInfoElement) {
             playerInfoElement.textContent = 'Bạn là: ' + check[0];
         }
+        startCountdown(); // bắt đầu đếm khi đủ 2 người vào game
     }
 });
 
@@ -241,6 +242,7 @@ function resetGame() {
     // Đặt lại người chơi hiện tại
     currentPlayer = 'X';
     currentTurn = 1;
+    startCountdown();
 }
 
 var remainingTime; // Cho mỗi người khoảng 5 phút --> biến gloabal
