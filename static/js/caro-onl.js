@@ -2,7 +2,7 @@
 let socket = io.connect('https://1df23f47-644a-4a2f-92f0-e2c1ed4d8666-00-1gbez3q37p9dp.pike.replit.dev/');
 
 // Kết nối socket thông qua LAN (BUILD TRÊN LOCAL)
-let socket = io.connect('http://' + document.domain + ':' + location.port);
+// let socket = io.connect('http://' + document.domain + ':' + location.port);
 
 // Tạo mã phòng để bắt đầu chơi
 document.getElementById('create-room-form').addEventListener('submit', function(e) {
@@ -232,8 +232,7 @@ function resetGame() {
 }
 
 var countdownne;
-var remainingTimeme; // Cho mỗi người khoảng 5 phút --> biến gloabal
-
+var remainingTimeme;
 var countdownenemy;
 var remainingTimeenemy;
 
