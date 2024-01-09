@@ -2,7 +2,7 @@
 let socket = io.connect('https://1df23f47-644a-4a2f-92f0-e2c1ed4d8666-00-1gbez3q37p9dp.pike.replit.dev/');
 
 // Kết nối socket thông qua LAN (BUILD TRÊN LOCAL)
-// let socket = io.connect('http://' + document.domain + ':' + location.port);
+let socket = io.connect('http://' + document.domain + ':' + location.port);
 
 // Tạo mã phòng để bắt đầu chơi
 document.getElementById('create-room-form').addEventListener('submit', function(e) {
@@ -45,15 +45,16 @@ document.getElementById('leave-room-button').addEventListener('click', function(
     e.preventDefault();
     // Gửi yêu cầu rời phòng đến server
     socket.emit('leave', { room_code: roomCode }, function(error) {
-        if (error) {
-            alert("Xảy ra lỗi, vui lòng thử lại sau!");
-        } else {
-            // Làm mới trang
-            location.reload();
-        }
+        // Làm mới trang
+        location.reload();
     });
 });
 
+// Xử lý sự kiện thông báo khi đối thủ mất kết nối
+// socket.on('opponentDisconnected', function() {
+// alert('Đối thủ đã mất kết nối. bạn hãy tìm một đối thủ mới (làm mới trang)');
+//location.reload();
+// });
 
 
 // Khai báo bảng và người chơi đầu được sử dụng "X"
@@ -109,37 +110,19 @@ socket.on('join', function(data) {
 
 // Khi một người chơi rời phòng, cập nhật lại thông tin phòng
 socket.on('leave', function(data) {
-    resetGame();
-    roomCode = data.room_code;
-    players = data.players;
-    currentSid = data.request_sid;
-
-    // Hiển thị lại số lượng người chơi và thông tin roles trong phòng
-    document.getElementById('player-count').textContent = 'Số người chơi: ' + players.length;
-    currentPlayer = players.find(player => player.id === currentSid);
-    if (check.length === 0 && currentPlayer === players[0]) {
-        check.push('X');
-    } else if (check.length === 0 && currentPlayer === players[1]) {
-        check.push('O');
-    }
-    // Kiểm tra xem có đủ 2 người chơi hay không và players[0] không phải là undefined
-    if (players.length === 2) {
-        players[0].symbol = 'X';
-        players[1].symbol = 'O';
-        // Kiểm tra xem currentPlayer có tồn tại không trước khi gán giá trị
-        let playerInfoElement = document.getElementById('player-info');
-        if (playerInfoElement) {
-            playerInfoElement.textContent = 'Bạn là: ' + check[0];
-        }
-    } else if (players.length === 1) {
-        players[0].symbol = '';
-        let playerInfoElement = document.getElementById('player-info');
-        if (playerInfoElement) {
-            playerInfoElement.textContent = 'Đang chờ đủ 2 người chơi';
-        }
-    }
+    setTimeout(function() {
+        alert('Đối thủ đã rời phòng, bạn hãy tìm một đối thủ mới (làm mới trang)!');
+        location.reload();
+    }, 1000);
 });
 
+// Socket listener để xác định khi có sự kiện cập nhật số người chơi trong phòng
+socket.on('playerCountUpdate', function(data) {
+    let roomCode = data.room_code;
+    let playerCount = data.player_count;
+    // Cập nhật giao diện với số người chơi mới
+    document.getElementById('player-count').textContent = 'Số người chơi: ' + playerCount;
+});
 
 let currentTurn = 1;
 
@@ -164,8 +147,10 @@ function handleClick(e) {
             stopCountdownme(); // Dừng đếm khi người chơi hiện tại di chuyển
             startCountdownenemy();
         } else {
-            alert('Chưa đến lượt của bạn!');
+            alert('Ô này đã được đánh rồi');
         }
+    } else {
+        alert('Chưa đến lượt của bạn!');
     }
 }
 
@@ -188,7 +173,6 @@ socket.on('opponentMove', function(data) {
                 resetGame();
             }, 100); // Thêm trễ 100ms
         }
-
         // Chuyển lượt cho người chơi hiện tại
         currentTurn++;
         setTimeout(startCountdownme, 0);
@@ -233,13 +217,10 @@ function checkWin(index, player) {
 }
 
 function resetGame() {
-    // Xóa tất cả các nước đi trên bảng
-    for (let i = 0; i < board.length; i++) {
+    for (let i = 0; i < board.length; i++) { // Xóa tất cả các nước đi trên bảng
         board[i].textContent = '';
-        // Thêm lại sự kiện click vào ô
-        board[i].addEventListener('click', handleClick, { once: true });
-        // Xóa các sự kiện highlight và tô màu 
-        board[i].classList.remove('x', 'o', 'highlight');
+        board[i].addEventListener('click', handleClick); // Thêm lại sự kiện click vào ô
+        board[i].classList.remove('x', 'o', 'highlight'); // Xóa các sự kiện highlight và tô màu 
     }
     // Đặt lại người chơi hiện tại
     currentPlayer = 'X';
