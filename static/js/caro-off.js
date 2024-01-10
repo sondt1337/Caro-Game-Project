@@ -1,5 +1,5 @@
 // Kết nối socket thông qua SERVER (BẮT BUỘC - nếu local thì kết nối qua https://)
-let socket = io.connect('https://caro-game-thai-son.onrender.com/');
+let socket = io.connect('https://caro-game-thai-son.onrender.com');
 
 // Khai báo bảng và người chơi đầu được sử dụng "X"
 let boardElement = document.getElementById('board');

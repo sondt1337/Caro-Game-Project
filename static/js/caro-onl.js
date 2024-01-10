@@ -1,5 +1,5 @@
 // Kết nối socket qua server (KHI KHỞI TẠO TRÊN SERVER)
-let socket = io.connect('https://caro-game-thai-son.onrender.com/');
+let socket = io.connect('https://caro-game-thai-son.onrender.com');
 
 // Kết nối socket thông qua LAN (BUILD TRÊN LOCAL)
 // let socket = io.connect('http://' + document.domain + ':' + location.port);
