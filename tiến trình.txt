@@ -4,3 +4,5 @@
 - nhiệm vụ: 
 	+ phân chia 2 biến time1, time2 cho 2 người chơi (làm cho 2 người có 2 mốc tg khác nhau để xét tính thắng thua) (đã hoàn thiện)
 	+ khi có người chơi out game (disconnect), sẽ tự động reload trang (hoàn thành)
+	+ Sửa lỗi chưa đến lượt người chơi này (V)
+	+ Tạo 2 hàm đếm thời gian cho 2 người chơi (cả 2 người chơi đều thấy thời gian còn lại của mình và đối thủ) (V)

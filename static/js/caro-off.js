@@ -32,7 +32,6 @@ socket.on('move_off', function(data) {
     board[data.index].textContent = data.player;
     currentPlayer = data.player === 'X' ? 'O' : 'X';
     if (checkWin(data.index, data.player)) {
-        statusElement.textContent = data.player + ' wins!';
         alert(data.player + ' wins!');
         resetGame();
     }
@@ -78,10 +77,8 @@ function resetGame() {
     // Xóa tất cả các nước đi trên bảng
     for (let i = 0; i < board.length; i++) {
         board[i].textContent = '';
-        // Thêm lại sự kiện click vào ô
-        board[i].addEventListener('click', handleClick, { once: true });
-        // Xóa các sự kiện highlight và tô màu 
-        board[i].classList.remove('x', 'o', 'highlight');
+        board[i].addEventListener('click', handleClick); // Thêm lại sự kiện click vào ô
+        board[i].classList.remove('x', 'o', 'highlight'); // Xóa các sự kiện highlight và tô màu 
     }
     // Đặt lại người chơi hiện tại
     currentPlayer = 'X';
