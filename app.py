@@ -49,6 +49,9 @@ def on_join(data):
       global global_player_count
       room_code = data['room_code']
 
+      if room_code not in rooms or len(rooms[room_code]['players']) >= 2:
+        return 'Room is full', 400
+
       symbol = 'X' if global_player_count == 1 else 'O'
       player = {'id': request.sid, 'symbol': symbol}
       rooms[room_code]['players'].append(player)

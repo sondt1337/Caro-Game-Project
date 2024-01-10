@@ -28,7 +28,7 @@ document.getElementById('join-room-form').addEventListener('submit', function(e)
     let roomCode = document.getElementById('join-room-code').value;
     socket.emit('join', { room_code: roomCode }, function(error) {
         if (error) {
-            alert("Không thể vào phòng này!");
+            alert("Phòng không tồn tại hoặc đã đủ số người chơi!");
         } else {
             // Ẩn cả khối chứa form tạo phòng và form tham gia phòng
             document.getElementById('create-room-form').parentElement.style.display = 'none';
