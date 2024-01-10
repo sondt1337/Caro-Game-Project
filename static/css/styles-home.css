@@ -1,5 +1,8 @@
 body {
-    background-color: #f0f0f0;
+    background-image: url('../images/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
     font-family: Arial, sans-serif;
 }
 

@@ -10,22 +10,25 @@
   <div class="form-container">
     <form id="create-room-form">
         <input type="text" id="create-room-code" placeholder="Room code">
-        <button type="submit">Create room</button>
+        <button type="submit">Tạo phòng</button>
     </form>
   </div>
   <div class="form-container">
     <form id="join-room-form">
         <input type="text" id="join-room-code" placeholder="Room code">
-        <button type="submit">Join room</button>
+        <button type="submit">Vào phòng</button>
     </form>
   </div>
-  <div id="current-room">Phòng hiện tại: Chưa có</div>
-  <button id="leave-room-button" style="display: none;" type= "submit">Rời phòng</button>
-    
+  <div id="current-room-container" class="frame-container" style="display: none;">
+    <div class="frame-content">
+        <p id="current-room"></p>
+        <button id="leave-room-button" type="submit">Rời phòng</button>
+    </div>
+  </div>
     <p id="player-count">Số người chơi: 0</p>
     <p id="player-info">Đang chờ đủ 2 người chơi</p>
-    <p id="countdownme">Thời gian còn lại của bạn: 5:00</p>
-    <p id="countdownenemy">Thời gian còn lại của đối thủ: 5:00</p>
+    <p id="countdownme"></p>
+    <p id="countdownenemy"></p>
 
     <!--Cập nhật trạng thái game-->
     <div id="status"></div>

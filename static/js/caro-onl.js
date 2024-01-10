@@ -1,5 +1,5 @@
 // Kết nối socket qua server (KHI KHỞI TẠO TRÊN SERVER)
-let socket = io.connect('https://caro-game-thai-son.onrender.com');
+let socket = io.connect('https://1df23f47-644a-4a2f-92f0-e2c1ed4d8666-00-1gbez3q37p9dp.pike.replit.dev/');
 
 // Kết nối socket thông qua LAN (BUILD TRÊN LOCAL)
 // let socket = io.connect('http://' + document.domain + ':' + location.port);
@@ -34,8 +34,10 @@ document.getElementById('join-room-form').addEventListener('submit', function(e)
             document.getElementById('create-room-form').parentElement.style.display = 'none';
             document.getElementById('join-room-form').parentElement.style.display = 'none';
             // Hiển thị thông tin về phòng hiện tại và nút để rời phòng
-            document.getElementById('current-room').innerText = 'Phòng hiện tại: ' + roomCode;
-            document.getElementById('leave-room-button').style.display = 'block';
+            let currentRoomElement = document.getElementById('current-room');
+            currentRoomElement.innerText = 'Phòng hiện tại: ' + roomCode;
+            currentRoomElement.style.fontWeight = 'bold';
+            document.getElementById('current-room-container').style.display = 'block';
         }
     });
 });
@@ -45,17 +47,9 @@ document.getElementById('leave-room-button').addEventListener('click', function(
     e.preventDefault();
     // Gửi yêu cầu rời phòng đến server
     socket.emit('leave', { room_code: roomCode }, function(error) {
-        // Làm mới trang
         location.reload();
     });
 });
-
-// Xử lý sự kiện thông báo khi đối thủ mất kết nối
-// socket.on('opponentDisconnected', function() {
-// alert('Đối thủ đã mất kết nối. bạn hãy tìm một đối thủ mới (làm mới trang)');
-//location.reload();
-// });
-
 
 // Khai báo bảng và người chơi đầu được sử dụng "X"
 let boardElement = document.getElementById('board');
@@ -180,7 +174,6 @@ socket.on('opponentMove', function(data) {
     }
 });
 
-
 // Hàm kiểm tra trả về kết quả (Thắng - Hòa)
 function checkWin(index, player) {
     let row = Math.floor(index / 20);
@@ -217,7 +210,8 @@ function checkWin(index, player) {
 }
 
 function resetGame() {
-    for (let i = 0; i < board.length; i++) { // Xóa tất cả các nước đi trên bảng
+    // Xóa tất cả các nước đi trên bảng
+    for (let i = 0; i < board.length; i++) {
         board[i].textContent = '';
         board[i].addEventListener('click', handleClick); // Thêm lại sự kiện click vào ô
         board[i].classList.remove('x', 'o', 'highlight'); // Xóa các sự kiện highlight và tô màu 
@@ -250,7 +244,7 @@ function startCountdownme() {
             alert('Hết giờ! Bạn đã thua. Bấm để chơi ván khác!');
             resetGame();
         }
-    }, 1000); // Cập nhật mỗi 1 giây
+    }, 1000);
 }
 
 function startCountdownenemy() {
@@ -267,10 +261,10 @@ function startCountdownenemy() {
             alert('Đối thủ đã thua. Bấm để chơi ván khác!');
             resetGame();
         }
-    }, 1000); // Cập nhật mỗi 1 giây
+    }, 1000);
 }
 
-// Hàm dừng đếm khi người chơi di chuyển
+// Dừng đếm khi người chơi di chuyển
 function stopCountdownme() {
     clearInterval(countdownme);
     document.getElementById('countdownme').textContent = 'Thời gian còn lại của bạn: 5:00';
