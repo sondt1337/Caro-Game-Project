@@ -1,19 +1,11 @@
 # Caro Game Project
 ## Giới thiệu (Introduction)
-| Sản phẩm  | Caro Game                        |
-| --------- | -------------------------------- |
-| Sinh viên | Đinh Thái Sơn                    |
-| MSSV      | 20210750                         |
-| Frontend  | HTML, CSS, JavaScript, Bootstrap |
-| Backend   | Flask (Python), WebSocket        |
-
-## Giao diện (Interface)
-### Trang chủ
-
-![](src_project/image.png)
-
-## Demo
-Bạn có thể trải nghiệm sản phẩm "Cờ caro" thông qua demo dưới đây của tôi: [Demo Caro Game Project](https://1df23f47-644a-4a2f-92f0-e2c1ed4d8666-00-1gbez3q37p9dp.pike.replit.dev/)
+| Sản phẩm  | Caro Game                 |
+| --------- | ------------------------- |
+| Sinh viên | Đinh Thái Sơn             |
+| MSSV      | 20210750                  |
+| Frontend  | HTML, CSS, JavaScript     |
+| Backend   | Flask (Python), WebSocket |
 
 ## Tổng quan về Project (Project Overview)
 Xây dựng một game Caro cổ điển với các tính năng đa dạng để mang lại trải nghiệm độc đáo cho người chơi. Dưới đây là mô tả chi tiết về các tính năng chính của dự án:
@@ -33,6 +25,21 @@ Xây dựng một game Caro cổ điển với các tính năng đa dạng để
 
 ### Máy đấu máy (Computer vs Computer Mode):
 - Chế độ này xây dựng dựa trên thuật toán giữa người và máy. Sử dụng tính ngẫu nhiên giữa các bước di chuyển đạt điểm bằng nhau của giải thuật minimax, tạo ra các bước di chuyển khác nhau giữa hai máy, mô phỏng như hai người chơi thực sự đang chơi.
+
+## Giao diện (Interface)
+### Trang chủ
+
+![](src_project/image.png)
+
+### Online (Create Room &  Join Room)
+![](src_project/online.png)
+
+### Offline & Human vs Computer
+
+![](src_project/off_comp.png)
+
+## Demo
+Bạn có thể trải nghiệm sản phẩm "Cờ caro" thông qua demo dưới đây của tôi: [Demo Caro Game Project](https://1df23f47-644a-4a2f-92f0-e2c1ed4d8666-00-1gbez3q37p9dp.pike.replit.dev/)
 
 ## Cấu trúc của project (Project Structure)
 Project được tổ chức thành một ứng dụng Python Flask với tích hợp WebSocket để giao tiếp thời gian thực giữa những người chơi. Các thành phần chính của dự án bao gồm logic trò chơi, giao diện người dùng và chức năng nhiều người chơi.
@@ -69,9 +76,8 @@ Trước khi xây dựng và chạy dự án, cần đảm báo python cần có
 ```
 # pip install flask
 # pip install flask-socketio
+# pip install python-socketio
 # pip install jinja2
-# pip install gevent
-# pip install gevent-websocket
 ```
 
 ## Chạy trên local (Local Deployment)
@@ -81,4 +87,35 @@ Sau khi tải các thư viện đầy đủ, có thể chạy ứng dụng với
 python app.py
 ```
 
+Hoặc chạy đoạn code sau để tự động tải project từ github về và chạy local: 
+```python
+# -*- coding: utf-8 -*-
+import subprocess
+import shutil
+import os
+
+caro_game_project_path = "Caro-Game-Project"
+if os.path.exists(caro_game_project_path):
+    shutil.rmtree(caro_game_project_path)
+
+git_clone_command = "git clone https://github.com/spid3r1337/Caro-Game-Project.git"
+subprocess.call(git_clone_command, shell=True)
+subprocess.call("pip install flask", shell=True)
+subprocess.call("pip install flask-socketio", shell=True)
+subprocess.call("pip install python-socketio", shell=True)
+subprocess.call("pip install jinja2", shell=True)
+
+
+app_py_path = os.path.join(caro_game_project_path, "app.py")
+
+if os.path.exists(app_py_path):
+    command = "python {}".format(app_py_path)
+    subprocess.call(command, shell=True)
+else:
+    print("File app.py not found in {}.".format(caro_game_project_path))
+```
+
 Xem trang http://localhost:8000/ (5000 là port mặc định của Flask, tuy nhiên ở trong app.py đã được thay đổi để chạy trên 0.0.0.0:8000) trong trình duyệt bất kỳ trên máy để vào game
+
+## Liên hệ (Contact)
+Son Dinh Thai: sondinh99999@gmail.com
