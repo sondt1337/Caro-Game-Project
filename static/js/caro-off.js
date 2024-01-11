@@ -1,5 +1,8 @@
-// Kết nối socket thông qua SERVER (BẮT BUỘC - nếu local thì kết nối qua https://)
-let socket = io.connect('https://1df23f47-644a-4a2f-92f0-e2c1ed4d8666-00-1gbez3q37p9dp.pike.replit.dev/');
+// Kết nối socket qua server (KHI KHỞI TẠO TRÊN SERVER)
+// let socket = io.connect('https://1df23f47-644a-4a2f-92f0-e2c1ed4d8666-00-1gbez3q37p9dp.pike.replit.dev/');
+
+// Kết nối socket thông qua LAN (BUILD TRÊN LOCAL)
+let socket = io.connect('http://' + document.domain + ':' + location.port);
 
 // Khai báo bảng và người chơi đầu được sử dụng "X"
 let boardElement = document.getElementById('board');

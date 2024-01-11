@@ -29,7 +29,7 @@ Xây dựng một game Caro cổ điển với các tính năng đa dạng để
 ## Giao diện (Interface)
 ### Trang chủ
 
-![](src_project/image.png)
+![](src_project/home.png)
 
 ### Online (Create Room &  Join Room)
 ![](src_project/online.png)
@@ -39,7 +39,7 @@ Xây dựng một game Caro cổ điển với các tính năng đa dạng để
 ![](src_project/off_comp.png)
 
 ## Demo
-Bạn có thể trải nghiệm sản phẩm "Cờ caro" thông qua demo dưới đây của tôi: [Demo Caro Game Project](https://1df23f47-644a-4a2f-92f0-e2c1ed4d8666-00-1gbez3q37p9dp.pike.replit.dev/)
+Bạn có thể trải nghiệm sản phẩm "Cờ caro" thông qua demo dưới đây của tôi: [Demo Caro Game Project](https://1df23f47-644a-4a2f-92f0-e2c1ed4d8666-00-1gbez3q37p9dp.pike.replit.dev/) *(Hiện tại Replit không còn hỗ trợ tự động deploy server khi có ping đến nữa nên cần bật tay, bạn có thể fork về và Run code có sẵn)*
 
 ## Cấu trúc của project (Project Structure)
 Project được tổ chức thành một ứng dụng Python Flask với tích hợp WebSocket để giao tiếp thời gian thực giữa những người chơi. Các thành phần chính của dự án bao gồm logic trò chơi, giao diện người dùng và chức năng nhiều người chơi.
@@ -47,6 +47,12 @@ Project được tổ chức thành một ứng dụng Python Flask với tích 
 ```
 Caro-Game-Project
 ├── app.py
+├───build_local
+│   └── main.py
+├───src_project
+│   ├── home.png
+│   ├── off_comp.png
+│   └── online.png
 ├── __pycache__
 │   └── game.cpython-39.pyc
 ├── README.md
@@ -55,15 +61,13 @@ Caro-Game-Project
 │   │   ├── styles-caro.css
 │   │   └── styles-home.css
 │   ├── images
-│   │   └── logo.png
+│   │   ├── logo.png
+│   │   └── background.jpg
 │   └── js
-│       ├── caro-2computer.js
 │       ├── caro-computer.js
 │       ├── caro-off.js
-│       ├── caro-onl.js
-│       └── main.js
+│       └── caro-onl.js
 └── templates
-    ├── caro-2computer.html
     ├── caro-computer.html
     ├── caro-off.html
     ├── caro-onl.html
@@ -87,7 +91,7 @@ Sau khi tải các thư viện đầy đủ, có thể chạy ứng dụng với
 python app.py
 ```
 
-Hoặc chạy đoạn code sau để tự động tải project từ github về và chạy local: 
+Hoặc chạy đoạn code sau [main.py](build_local/main.py) để tự động tải project từ github về và chạy local: 
 ```python
 # -*- coding: utf-8 -*-
 import subprocess
@@ -118,4 +122,4 @@ else:
 Xem trang http://localhost:8000/ (5000 là port mặc định của Flask, tuy nhiên ở trong app.py đã được thay đổi để chạy trên 0.0.0.0:8000) trong trình duyệt bất kỳ trên máy để vào game
 
 ## Liên hệ (Contact)
-Son Dinh Thai: sondinh99999@gmail.com
+Son Dinh Thai: sondinh99999@gmail.com hoặc Son.DT210750@sis.hust.edu.vn

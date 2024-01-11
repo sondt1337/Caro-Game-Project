@@ -1,8 +1,8 @@
 // Kết nối socket qua server (KHI KHỞI TẠO TRÊN SERVER)
-let socket = io.connect('https://1df23f47-644a-4a2f-92f0-e2c1ed4d8666-00-1gbez3q37p9dp.pike.replit.dev/');
+// let socket = io.connect('https://1df23f47-644a-4a2f-92f0-e2c1ed4d8666-00-1gbez3q37p9dp.pike.replit.dev/');
 
 // Kết nối socket thông qua LAN (BUILD TRÊN LOCAL)
-// let socket = io.connect('http://' + document.domain + ':' + location.port);
+let socket = io.connect('http://' + document.domain + ':' + location.port);
 
 // Tạo mã phòng để bắt đầu chơi
 document.getElementById('create-room-form').addEventListener('submit', function(e) {
@@ -232,7 +232,7 @@ var remainingTimeenemy;
 
 function startCountdownme() {
     clearInterval(countdownme);
-    remainingTimeme = 300;
+    remainingTimeme = 30;
     countdownme = setInterval(function() {
         const minutes = Math.floor(remainingTimeme / 60);
         const seconds = remainingTimeme % 60;
@@ -249,7 +249,7 @@ function startCountdownme() {
 
 function startCountdownenemy() {
     clearInterval(countdownenemy);
-    remainingTimeenemy = 300;
+    remainingTimeenemy = 30;
     countdownenemy = setInterval(function() {
         const minutes = Math.floor(remainingTimeenemy / 60);
         const seconds = remainingTimeenemy % 60;
@@ -267,10 +267,10 @@ function startCountdownenemy() {
 // Dừng đếm khi người chơi di chuyển
 function stopCountdownme() {
     clearInterval(countdownme);
-    document.getElementById('countdownme').textContent = 'Thời gian còn lại của bạn: 5:00';
+    document.getElementById('countdownme').textContent = 'Thời gian còn lại của bạn: 0:30';
 }
 
 function stopCountdownenemy() {
     clearInterval(countdownenemy);
-    document.getElementById('countdownenemy').textContent = 'Thời gian còn lại của đối thủ: 5:00';
+    document.getElementById('countdownenemy').textContent = 'Thời gian còn lại của đối thủ: 0:30';
 }
