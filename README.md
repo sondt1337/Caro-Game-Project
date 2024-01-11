@@ -10,6 +10,9 @@
 ## Tổng quan về Project (Project Overview)
 Xây dựng một game Caro cổ điển với các tính năng đa dạng để mang lại trải nghiệm độc đáo cho người chơi. Dưới đây là mô tả chi tiết về các tính năng chính của dự án:
 
+## Demo sản phẩm
+Bạn có thể trải nghiệm sản phẩm "Cờ caro" thông qua demo dưới đây của tôi: [Demo Caro Game Project](https://thai-son-caro-game.glitch.me/)
+
 ### Đấu với máy (Single Player Mode):
 - Sử dụng [giải thuật minimax](https://youtu.be/fTBEjsrZKso?si=RCymjDB1boUf3Eq8) để xây dựng chế độ này
 - Các bước di chuyển của máy sẽ dựa trên tính toán các kết quả bao gồm có tấn công (cố gắng chiếm được 5 bước thẳng hàng) và phòng thủ (bảo vệ không cho đối thủ chiếm được 5 bước thẳng hàng) và chọn bước di chuyển ứng với kết quả tốt nhất trong sự kiện đó (nếu có nhiều kết quả có giá trị tấn công/phòng thủ bằng nhau thì sẽ random) 
@@ -37,9 +40,6 @@ Xây dựng một game Caro cổ điển với các tính năng đa dạng để
 ### Offline & Human vs Computer
 
 ![](src_project/off_comp.png)
-
-## Demo
-Bạn có thể trải nghiệm sản phẩm "Cờ caro" thông qua demo dưới đây của tôi: [Demo Caro Game Project](https://1df23f47-644a-4a2f-92f0-e2c1ed4d8666-00-1gbez3q37p9dp.pike.replit.dev/) *(Hiện tại Replit không còn hỗ trợ tự động deploy server khi có ping đến nữa nên cần bật tay, bạn có thể fork về và Run code có sẵn)*
 
 ## Cấu trúc của project (Project Structure)
 Project được tổ chức thành một ứng dụng Python Flask với tích hợp WebSocket để giao tiếp thời gian thực giữa những người chơi. Các thành phần chính của dự án bao gồm logic trò chơi, giao diện người dùng và chức năng nhiều người chơi.
