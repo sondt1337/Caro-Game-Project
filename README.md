@@ -1,58 +1,47 @@
 # Caro Game Project
-## Giới thiệu (Introduction)
-| Sản phẩm  | Caro Game                 |
-| --------- | ------------------------- |
-| Sinh viên | Đinh Thái Sơn             |
-| MSSV      | 20210750                  |
-| Frontend  | HTML, CSS, JavaScript     |
-| Backend   | Flask (Python), WebSocket |
+## Introduction
+| Product       | Caro Game                 |
+| ------------- | ------------------------- |
+| Author (Name) | Thai Son Dinh             |
+| StudentID     | 20210750                  |
+| Email         | sondinh99999@gmail.com    |
+| Frontend      | HTML, CSS, JavaScript     |
+| Backend       | Flask (Python), WebSocket |
 
-## Tổng quan về Project (Project Overview)
-Xây dựng một game Caro cổ điển với các tính năng đa dạng để mang lại trải nghiệm độc đáo cho người chơi. Dưới đây là mô tả chi tiết về các tính năng chính của dự án:
+## Project Demo
+You can experience the "Caro Game" through my demo below: [Demo Caro Game Project](https://thai-son-caro-game.glitch.me/)
 
-## Demo sản phẩm
-Bạn có thể trải nghiệm sản phẩm "Cờ caro" thông qua demo dưới đây của tôi: [Demo Caro Game Project](https://thai-son-caro-game.glitch.me/)
+## Project Overview
+Developing a classic Caro game with diverse features to provide a unique gaming experience for players. Below is a detailed description of the key features of the project:
 
-### Đấu với máy (Single Player Mode):
-- Sử dụng [giải thuật minimax](https://youtu.be/fTBEjsrZKso?si=RCymjDB1boUf3Eq8) để xây dựng chế độ này
-- Các bước di chuyển của máy sẽ dựa trên tính toán các kết quả bao gồm có tấn công (cố gắng chiếm được 5 bước thẳng hàng) và phòng thủ (bảo vệ không cho đối thủ chiếm được 5 bước thẳng hàng) và chọn bước di chuyển ứng với kết quả tốt nhất trong sự kiện đó (nếu có nhiều kết quả có giá trị tấn công/phòng thủ bằng nhau thì sẽ random) 
 
-### Đấu offline 2 người (Local Multiplayer Mode):
-- Cho phép hai người chơi có thể chơi trên cùng một máy.
-- Không sử dụng thuật toán, chỉ đơn giản kiểm tra chiến thắng khi có một trong hai người chơi đạt 5 bước thẳng hàng hoặc khi hết ô trống.
+### Single Player Mode (Human vs Computer):
+- Utilizing [Minimax Algorithm](https://youtu.be/fTBEjsrZKso?si=RCymjDB1boUf3Eq8) to implement this mode.
+- The computer's moves will be based on calculating outcomes that involve both offensive (trying to achieve a sequence of 5 moves in a row) and defensive strategies (protecting against the opponent's attempt to achieve a sequence of 5 moves in a row). The computer will then choose the move corresponding to the best outcome in that scenario (if there are multiple outcomes with equal offensive/defensive values, it will be chosen randomly).
 
-### Đấu online 2 người (Online Multiplayer Mode):
-- Dựa trên chế độ đấu offline 2 người (Local Multiplayer Mode) với tính năng giúp 2 người chơi có thể thao tác game trên 2 thiết bị bất kỳ thông qua mạng Internet
-- Socket Flask đóng vai trò làm cầu nối giữa 2 thiết bị trên server, sẽ tự động cập nhật các bước di chuyển và trạng thái của game giữa 2 người chơi
-- Tính năng tạo mã phòng và tham gia phòng giúp những người chơi không bị xung đột khi tham gia game cũng như đạt tính bảo mật
+### Local Multiplayer Mode (Human vs Human - Offline):
+- Enables two players to engage in a game on the same device.
+- Does not employ an algorithm; instead, it straightforwardly checks for a victory when either of the two players achieves a sequence of 5 moves in a row or when the board is fully occupied.
 
-### Máy đấu máy (Computer vs Computer Mode):
-- Chế độ này xây dựng dựa trên thuật toán giữa người và máy. Sử dụng tính ngẫu nhiên giữa các bước di chuyển đạt điểm bằng nhau của giải thuật minimax, tạo ra các bước di chuyển khác nhau giữa hai máy, mô phỏng như hai người chơi thực sự đang chơi.
+### Online Multiplayer Mode (Human vs Human - Online):
+- Based on the local multiplayer mode for two players (Local Multiplayer Mode), this feature allows two players to interact with the game on two separate devices over the Internet.
+- Flask Socket acts as a bridge between the two devices on the server, automatically updating the moves and game state between the two players.
+- The room creation, joining & leaving feature ensures that players do not conflict when participating in the game and enhances security measures.
 
-## Giao diện (Interface)
-### Trang chủ
+## Interface
+For more details about the product's interface, please visit [Product's Interface](Product-Interface/README.md)
 
-![](src_project/home.png)
-
-### Online (Create Room &  Join Room)
-![](src_project/online.png)
-
-### Offline & Human vs Computer
-
-![](src_project/off_comp.png)
-
-## Cấu trúc của project (Project Structure)
-Project được tổ chức thành một ứng dụng Python Flask với tích hợp WebSocket để giao tiếp thời gian thực giữa những người chơi. Các thành phần chính của dự án bao gồm logic trò chơi, giao diện người dùng và chức năng nhiều người chơi.
+## Project Structure
+The project is organized as a Python Flask application with integrated WebSocket for real-time communication among players. The main components of the project include the game logic, user interface, and multiplayer functionality.
 
 ```
 Caro-Game-Project
 ├── app.py
 ├───build_local
 │   └── main.py
-├───src_project
-│   ├── home.png
-│   ├── off_comp.png
-│   └── online.png
+├───Product-Interface
+│   ├── README.md
+│   └── ...
 ├── __pycache__
 │   └── game.cpython-39.pyc
 ├── README.md
@@ -74,24 +63,23 @@ Caro-Game-Project
     └── index.html
 ```
 
-## Các yêu cầu trước khi chạy (Requirements)
-Trước khi xây dựng và chạy dự án, cần đảm báo python cần có những thư viện sau:
+## Prerequisites (Requirements)
+Before building and running the project, ensure that Python has [the following libraries](requirements.txt)
 
-```
-# pip install flask
-# pip install flask-socketio
-# pip install python-socketio
-# pip install jinja2
+```bash
+$ pip install -r requirements.txt
 ```
 
-## Chạy trên local (Local Deployment)
+## Run Locally (Local Deployment)
 
-Sau khi tải các thư viện đầy đủ, có thể chạy ứng dụng với câu lệnh sau:
+After downloading all the necessary libraries, you can run the application with the following command:
 ```bash
 python app.py
 ```
 
-Hoặc chạy đoạn code sau [main.py](build_local/main.py) để tự động tải project từ github về và chạy local: 
+
+Or run the following code snippet [main.py](build_local/main.py) to automatically download the project from GitHub and run it locally:
+
 ```python
 # -*- coding: utf-8 -*-
 import subprocess
@@ -119,7 +107,15 @@ else:
     print("File app.py not found in {}.".format(caro_game_project_path))
 ```
 
-Xem trang http://localhost:8000/ (5000 là port mặc định của Flask, tuy nhiên ở trong app.py đã được thay đổi để chạy trên 0.0.0.0:8000) trong trình duyệt bất kỳ trên máy để vào game
+View the page http://localhost:8000/ (5000 is the default port for Flask, but in app.py, it has been modified to run on 0.0.0.0:8000) in any browser on your machine to access the game.
 
-## Liên hệ (Contact)
-Son Dinh Thai: sondinh99999@gmail.com hoặc Son.DT210750@sis.hust.edu.vn
+## Contact Author
+Son Dinh Thai: 
+- Personal Email: sondinh99999@gmail.com
+- Student's Email: Son.DT210750@sis.hust.edu.vn 
+
+Buy me a coffee ☕: https://www.buymeacoffee.com/spid3r
+
+Thank you for visiting and using this project!
+
+> Please note that the project is written in Vietnamese. If you have any questions or need further assistance, feel free to contact the author.
